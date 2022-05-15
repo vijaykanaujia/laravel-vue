@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Inertia\Inertia;
+use App\Models\Role;
+use App\Models\Permission;
 
 class ProductController extends Controller
 {
@@ -16,6 +18,12 @@ class ProductController extends Controller
      */
     public function index()
     {
+        // $role = Role::create(['name' => 'admin']);
+        // $permission = Permission::create(['name' => 'menu.create']);
+        // $permission = Permission::find(3);
+        $role = Role::find(3);
+        // $permission->assignRole($role);
+        auth()->user()->assignRole($role);
         return Inertia::render('Product/Read', [
             "products" => Product::orderBy('id', 'DESC')->paginate(10)
         ]);

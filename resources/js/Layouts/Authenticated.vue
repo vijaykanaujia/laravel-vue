@@ -1,13 +1,19 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import BreezeApplicationLogo from '@/Components/ApplicationLogo.vue';
 import BreezeDropdown from '@/Components/Dropdown.vue';
 import BreezeDropdownLink from '@/Components/DropdownLink.vue';
 import BreezeNavLink from '@/Components/NavLink.vue';
 import BreezeResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link, usePage } from '@inertiajs/inertia-vue3';
 
+defineProps({
+    menus: Object,
+});
 const showingNavigationDropdown = ref(false);
+
+const menus = ref(usePage().props.value.auth.menus);
+console.log(menus);
 </script>
 
 <template>
@@ -33,6 +39,11 @@ const showingNavigationDropdown = ref(false);
                                 <BreezeNavLink :href="route('product.index')" :active="route().current('product.index')">
                                     Product
                                 </BreezeNavLink>
+                                <template v-if="menus">
+                                    <BreezeNavLink v-for="menu in menus" :key="menu.id" :href="route(menu.page ? menu.page : 'guest')" :active="route().current(menu.page ? menu.page : 'guest')">
+                                        {{menu.title}}
+                                    </BreezeNavLink>
+                                </template>
                             </div>
                         </div>
 
@@ -77,7 +88,7 @@ const showingNavigationDropdown = ref(false);
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <BreezeResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard 123
+                            Dashboard
                         </BreezeResponsiveNavLink>
                         <BreezeResponsiveNavLink :href="route('product.index')" :active="route().current('product.index')">
                             Product
