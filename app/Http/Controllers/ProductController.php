@@ -23,7 +23,7 @@ class ProductController extends Controller
         // $permission = Permission::find(3);
         $role = Role::find(3);
         // $permission->assignRole($role);
-        auth()->user()->assignRole($role);
+        // auth()->user()->assignRole($role);
         return Inertia::render('Product/Read', [
             "products" => Product::orderBy('id', 'DESC')->paginate(10)
         ]);
