@@ -5,3 +5,7 @@
 .stroke-black {
     stroke: #1f2937;
 }
+
+:root {
+    --primary-color : #1f2937;
+}

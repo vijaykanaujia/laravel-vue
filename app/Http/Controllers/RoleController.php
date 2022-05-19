@@ -13,12 +13,26 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Role/Read', [
-            "roles" => Role::orderBy('id', 'DESC')->paginate(10),
-            'title' => 'Role'
-        ]);
+        $model = new Role();
+        $props = [
+            'page' => $request->get('page', 0),
+            'pageSize' => $request->get('pageSize', 10),
+            'cols' => $request->get('cols', []),
+            'filter' => [],
+            'orderField' => $request->get('orderField', 'id'),
+            'orderBy' => $request->get('orderBy', 'asc'),
+            'displayedColumns' => $model->getDisplayedColumns()
+        ];
+
+        $model = $model->selectCols($props['cols'])
+            ->applyFilter($props['filter'])->sortOrder($props['orderField'], $props['orderBy'])
+        ->paginate($props['pageSize'], ['*'], 'page', $props['page']);
+
+        $props['dataSource'] = $model;
+        $props['title'] = 'Role';
+        return Inertia::render('Role/Read', $props);
     }
 
     /**
