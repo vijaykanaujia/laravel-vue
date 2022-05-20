@@ -10,6 +10,8 @@ const props = defineProps({
     'orderBy': String,
     'orderField': String,
 });
+
+
 const selected = ref([]);
 const selectAll = computed({
     get: () => {
@@ -25,27 +27,42 @@ const selectAll = computed({
         selected.value = temp;
     }
 });
+const computedOrderBy = computed(() => {return props.orderBy});
+const computedOrderField = computed(() => {return props.orderField});
+const computedDisplayedColumns = computed(() => {
+    return props.displayedColumns;
+});
+const computedDataSorce = computed(() => {
+    return props.dataSource;
+});
 
 function getRowVal(obj, key) {
     return _.get(obj, key, '...');
 }
+
+const sortingWatcher = defineEmits(['sorting']);
+
+function changeOrder(field, order){
+    sortingWatcher('sorting', {orderField : field, orderBy : order=='asc' ? 'desc' : 'asc'});
+}
+
 </script>
 
 <template>
 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
-            <template v-for="col in displayedColumns" :key="col.ref">
+            <template v-for="col in computedDisplayedColumns" :key="col.ref">
                 <th v-if="col.ref =='select'" scope="col" class="px-6 py-3">
                     <input type="checkbox" v-model="selectAll">
                 </th>
                 <th v-if="(['select','action']).indexOf(col.ref) == -1" scope="col" class="px-6 py-3">
                     {{col.name}}
-                    <template v-if="orderField == col.ref">
-                        <span class="arrow active" :class="orderBy"></span>
+                    <template v-if="computedOrderField == col.ref">
+                        <span class="arrow active" :class="computedOrderBy" @click="changeOrder(computedOrderField, computedOrderBy)"></span>
                     </template>
                     <template v-else>
-                        <span class="arrow dsc"></span>
+                        <span class="arrow desc" @click="changeOrder(col.ref, 'asc')"></span>
                     </template>
                 </th>
                 <th v-if="col.ref =='action'" scope="col" class="px-6 py-3">
@@ -56,8 +73,8 @@ function getRowVal(obj, key) {
     </thead>
     <tbody>
         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <template v-for="row in dataSource" :key="row.id">
-                <template v-for="filter_col in displayedColumns">
+            <template v-for="row in computedDataSorce" :key="row.id">
+                <template v-for="filter_col in computedDisplayedColumns">
                     <td v-if="filter_col.ref == 'select'" class="px-6 py-4">
                         <input type="checkbox" v-model="selected" :value="row.id">
                     </td>
@@ -103,7 +120,7 @@ function getRowVal(obj, key) {
     border-bottom: 4px solid var(--primary-color);
 }
 
-.arrow.dsc {
+.arrow.desc {
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
     border-top: 4px solid var(--primary-color);

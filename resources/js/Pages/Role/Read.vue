@@ -5,6 +5,7 @@ import {
     Head,
     Link
 } from "@inertiajs/inertia-vue3";
+import { Inertia } from '@inertiajs/inertia'
 import DataTable from "@/Components/DataTable.vue";
 
 defineProps({
@@ -18,6 +19,10 @@ defineProps({
     'dataSource': Object,
     'title': String,
 });
+
+function sortingWatch(v){
+    Inertia.get(route('role.index'), v);
+}
 </script>
 
 <template>
@@ -59,7 +64,7 @@ defineProps({
                                 </div>
                             </div>
                         </div>
-                        <DataTable :displayed-columns="displayedColumns" :data-source="dataSource.data" :order-by="orderBy" :order-field="orderField" />
+                        <DataTable :displayed-columns="displayedColumns" :data-source="dataSource.data" :order-by="orderBy" :order-field="orderField" @sorting="sortingWatch" />
                     </div>
                 </div>
             </div>
