@@ -33,6 +33,11 @@ class BaseModel extends Model
         return [];
     }
 
+    public function getDisplayedColumns()
+    {
+        return [];
+    }
+
     public function selectCols($cols)
     {
         $bulder = $this->queryBuilder ?? $this;

@@ -44,4 +44,11 @@ class Role extends SpatieRole
             'guard_name',
         ];
     }
+
+    public function searchableColumns(){
+        return [
+            'name',
+            'guard_name'
+        ];
+    }
 }

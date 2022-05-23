@@ -49,7 +49,6 @@ trait BaseModelTrait {
 
     public function applyFilter($filter)
     {
-        return $this;
         $decodedData = json_decode($filter, 1);
         if (!empty($decodedData) && is_array($decodedData)) {
             $decodedData = collect($decodedData);

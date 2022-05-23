@@ -20,18 +20,15 @@ class RoleController extends Controller
             'page' => $request->get('page', 0),
             'pageSize' => $request->get('pageSize', 10),
             'cols' => $request->get('cols', []),
-            'filter' => [],
+            'filter' => $request->get('filter', ''),
             'orderField' => $request->get('orderField', 'id'),
             'orderBy' => $request->get('orderBy', 'asc'),
-            'displayedColumns' => $model->getDisplayedColumns()
+            'displayedColumns' => $model->getDisplayedColumns(),
+            'title' => 'Role'
         ];
-
-        $model = $model->selectCols($props['cols'])
-            ->applyFilter($props['filter'])->sortOrder($props['orderField'], $props['orderBy'])
-        ->paginate($props['pageSize'], ['*'], 'page', $props['page']);
-
-        $props['dataSource'] = $model;
-        $props['title'] = 'Role';
+        $model = $model->selectCols($props['cols'])->applyFilter($props['filter'])->sortOrder($props['orderField'], $props['orderBy']);
+        $model = $model->getBuilder();
+        $props['dataSource'] = $model->paginate($props['pageSize'], ['*'], 'page', $props['page']);
         return Inertia::render('Role/Read', $props);
     }
 
@@ -42,7 +39,10 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $props = [
+            'title' => 'Create Role',
+        ];
+        return Inertia::render('Role/Create', $props);
     }
 
     /**
