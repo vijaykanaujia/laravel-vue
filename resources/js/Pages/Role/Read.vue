@@ -16,6 +16,9 @@ import {
     watch
 } from "vue";
 
+import Modal from '@/Components/Modal.vue';
+import CreateRoleComponent from '@/Pages/Role/Create.vue';
+
 defineProps({
     'page': Number,
     'pageSize': Number,
@@ -27,6 +30,8 @@ defineProps({
     'dataSource': Object,
     'title': String,
 });
+
+const showModal = ref(false);
 
 const search_all = ref('');
 
@@ -76,7 +81,7 @@ async function fetchData(q, preserveState = true) {
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <div class="relative shadow-md sm:rounded-lg">
                         <div class="flex">
                             <div class="w-2/5">
                                 <div class="p-4">
@@ -91,20 +96,26 @@ async function fetchData(q, preserveState = true) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-3/5 text-right">
+                            <div class="w-3/5">
                                 <div class="p-4">
-                                    <Link :href="route('role.create')">
-                                    <BreezeButton class="ml-4">
+                                    <!-- <Link :href="route('role.create')"> -->
+                                    <BreezeButton class="ml-4 float-right" @click="showModal = true">
                                         Add Role
                                     </BreezeButton>
-                                    </Link>
+                                    <!-- </Link> -->
+                                    <Modal :show="showModal" :title="'Create Role'" @close="showModal = false">
+                                        <template #body>
+                                            <CreateRoleComponent :title="'Create Role'"></CreateRoleComponent>
+                                        </template>
+                                        <template #footer>&nbsp;</template>
+                                    </Modal>
                                 </div>
                             </div>
                         </div>
                         <template v-if="trigger_action">
                             <div class="flex">
                                 <div>
-                                    <Link>
+                                    <Link :href="route('role.destroy', 0)" method="delete" :data="{ids : action_ids, action_type : 'multi-delete'}">
                                     <BreezeButton class="ml-4">
                                         delete
                                     </BreezeButton>
@@ -113,7 +124,7 @@ async function fetchData(q, preserveState = true) {
                             </div>
                         </template>
                         <DataTable :displayed-columns="displayedColumns" :data-source="dataSource.data" :order-by="orderBy" :order-field="orderField" @sorting-order="fnSortingOrder" @multi-action="fnMultiAction" />
-                        <Pagination :links="dataSource.links" />
+                        <Pagination class="my-2" :links="dataSource.links" />
                     </div>
                 </div>
             </div>

@@ -16,6 +16,7 @@
         @routes
         <script src="{{ mix('js/app.js') }}" defer></script>
         @inertiaHead
+        <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
     <body class="font-sans antialiased">
         @inertia

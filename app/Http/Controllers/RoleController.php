@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use Inertia\Inertia;
+use App\Http\Requests\Role\StoreRoleRequest;
+use Illuminate\Support\Facades\Redirect;
 
 class RoleController extends Controller
 {
@@ -22,7 +24,7 @@ class RoleController extends Controller
             'cols' => $request->get('cols', []),
             'filter' => $request->get('filter', ''),
             'orderField' => $request->get('orderField', 'id'),
-            'orderBy' => $request->get('orderBy', 'asc'),
+            'orderBy' => $request->get('orderBy', 'desc'),
             'displayedColumns' => $model->getDisplayedColumns(),
             'title' => 'Role'
         ];
@@ -48,12 +50,14 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\Role\StoreRoleRequest;  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        //
+        $validated = $request->validated();
+        Role::create($validated);
+        return Redirect::back();
     }
 
     /**
@@ -96,8 +100,15 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $role = new Role();
+        if($request->action_type == 'multi-delete'){
+            $role->whereIn('id', $request->ids)->delete();
+        }
+        if($request->role){
+            $role->find($request->role)->delete();
+        }
+        return Redirect::back();
     }
 }
