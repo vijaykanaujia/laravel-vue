@@ -74,12 +74,17 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        //
+        $props = [
+            'title' => "Update Role : #". $role->id,
+            'role' => $role,
+            'token' => csrf_token()
+        ];
+        return Inertia::render('Role/Edit', $props);
     }
 
     /**
@@ -89,9 +94,11 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreRoleRequest $request, Role $role)
     {
-        //
+        $validated = $request->validated();
+        $role->update($validated);
+        return Redirect::back();
     }
 
     /**

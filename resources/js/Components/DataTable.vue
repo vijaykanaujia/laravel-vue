@@ -119,6 +119,7 @@ function changeOrder(field, order) {
     height: 0;
     margin-left: 5px;
     opacity: 0.66;
+    margin-bottom: 1px;
 }
 
 .arrow.asc {
