@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Permission;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Requests\Menu\StorePermissionRequest;
+use App\Http\Requests\Permission\StorePermissionRequest;
 
 class PermissionController extends Controller
 {
@@ -45,10 +45,10 @@ class PermissionController extends Controller
     {
         $props = [
             'title' => 'Create Permission',
-            'menu' => getSelectInputMenu(),
+            'menuList' => getAllSelectInputMenu(),
             'token' => csrf_token()
         ];
-        return Inertia::render('Settings/Menu/Create', $props);
+        return Inertia::render('Settings/Permission/Create', $props);
     }
 
     /**
@@ -89,7 +89,7 @@ class PermissionController extends Controller
         $props = [
             'title' => "Update Permission : #". $permission->id,
             'permission' => $permission,
-            'menu' => getSelectInputMenu(),
+            'menuList' => getAllSelectInputMenu(),
             'token' => csrf_token()
         ];
         return Inertia::render('Settings/Permission/Edit', $props);
@@ -102,7 +102,7 @@ class PermissionController extends Controller
      * @param  int  $permission
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StorePermissionRequest $permission)
+    public function update(StorePermissionRequest $request, Permission $permission)
     {
         $permission->update($request->validated());
         return Redirect::back();

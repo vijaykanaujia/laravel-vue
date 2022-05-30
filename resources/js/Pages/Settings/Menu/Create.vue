@@ -2,9 +2,7 @@
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import BreezeButton from '@/Components/Button.vue';
 import BreezeInput from '@/Components/Input.vue';
-import BreezeTextarea from '@/Components/Textarea.vue';
 import BreezeLabel from '@/Components/Label.vue';
-import BreezeSelect from '@/Components/Select.vue';
 import BreezeError from '@/Components/InputError.vue';
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
 import {
@@ -12,7 +10,6 @@ import {
     useForm,
     Link
 } from '@inertiajs/inertia-vue3';
-import { propsToAttrMap } from "@vue/shared";
 
 const props = defineProps({
     'title': String,
