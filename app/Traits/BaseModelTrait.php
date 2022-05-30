@@ -5,11 +5,6 @@ namespace App\Traits;
 use Illuminate\Support\Facades\DB;
 
 trait BaseModelTrait {
-    protected $relations = [];
-    protected $textSearch = [];
-    /**
-     * @var Illuminate\Database\Eloquent\Builder | null
-     */
     protected $queryBuilder = null;
 
     public function getAllColumns()

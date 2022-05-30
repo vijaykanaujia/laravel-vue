@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Role;
+use App\Models\Menu;
 use Inertia\Inertia;
-use App\Http\Requests\Role\StoreRoleRequest;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\Menu\StoreMenuRequest;
+use App\Http\Requests\Menu\EditMenuRequest;
 
-class RoleController extends Controller
+class MenuController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +18,7 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $model = new Role();
+        $model = new Menu();
         $props = [
             'page' => $request->get('page', 0),
             'pageSize' => $request->get('pageSize', 10),
@@ -26,12 +27,12 @@ class RoleController extends Controller
             'orderField' => $request->get('orderField', 'id'),
             'orderBy' => $request->get('orderBy', 'desc'),
             'displayedColumns' => $model->getDisplayedColumns(),
-            'title' => 'Role'
+            'title' => 'Menu'
         ];
         $model = $model->selectCols($props['cols'])->applyFilter($props['filter'])->sortOrder($props['orderField'], $props['orderBy']);
         $model = $model->getBuilder();
         $props['dataSource'] = $model->paginate($props['pageSize'], ['*'], 'page', $props['page']);
-        return Inertia::render('Settings/Role/Read', $props);
+        return Inertia::render('Settings/Menu/Read', $props);
     }
 
     /**
@@ -42,77 +43,84 @@ class RoleController extends Controller
     public function create()
     {
         $props = [
-            'title' => 'Create Role',
+            'title' => 'Create Menu',
+            'parent_menu' => getSelectInputMenu(),
+            'token' => csrf_token()
         ];
-        return Inertia::render('Settings/Role/Create', $props);
+        return Inertia::render('Settings/Menu/Create', $props);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\Role\StoreRoleRequest;  $request
+     * @param  App\Http\Requests\Menu\StoreMenuRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRoleRequest $request)
+    public function store(StoreMenuRequest $request)
     {
-        Role::create($request->validated());
-        return Redirect::back();
+        Menu::create($request->validated());
+        return Redirect::route('menu.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $menu
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Menu $menu)
     {
-        //
+        $props = [
+            'title' => 'Menu Details: #'. $menu->id,
+            'menu' => $menu
+        ];
+        return Inertia::render('Settings/Menu/Show', $props);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $role
+     * @param  int  $menu
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit(Menu $menu)
     {
         $props = [
-            'title' => "Update Role : #". $role->id,
-            'role' => $role,
+            'title' => "Update Menu : #". $menu->id,
+            'menu' => $menu,
+            'parent_menu' => getSelectInputMenu(),
             'token' => csrf_token()
         ];
-        return Inertia::render('Settings/Role/Edit', $props);
+        return Inertia::render('Settings/Menu/Edit', $props);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  App\Http\Requests\Menu\EditMenuRequest  $request
+     * @param  Object  $menu
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreRoleRequest $request, Role $role)
+    public function update(EditMenuRequest $request, Menu $menu)
     {
-        $role->update($request->validated());
+        $menu->update($request->validated());
         return Redirect::back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $menu
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
     {
-        $role = new Role();
+        $menu = new Menu();
         if($request->action_type == 'multi-delete'){
-            $role->whereIn('id', $request->ids)->delete();
+            $menu->whereIn('id', $request->ids)->delete();
         }
-        if($request->role){
-            $role->find($request->role)->delete();
+        if($request->menu){
+            $menu->find($request->menu)->delete();
         }
         return Redirect::back();
     }

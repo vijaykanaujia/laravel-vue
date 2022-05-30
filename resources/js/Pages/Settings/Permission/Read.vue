@@ -16,22 +16,20 @@ import {
     watch
 } from "vue";
 
-import Modal from '@/Components/Modal.vue';
-import CreateRoleComponent from '@/Pages/Role/Create.vue';
-
-defineProps({
+const props = defineProps({
     'page': Number,
     'pageSize': Number,
     'cols': Array,
-    'filter': Array,
+    'filter': String,
     'orderField': String,
     'orderBy': String,
     'displayedColumns': Array,
     'dataSource': Object,
     'title': String,
+    'with' : Array,
 });
 
-const showModal = ref(false);
+console.log(props.dataSource);
 
 const search_all = ref('');
 
@@ -60,7 +58,7 @@ function fnSortingOrder(data) {
 
 
 async function fetchData(q, preserveState = true) {
-    Inertia.get(route('role.index'), q, {
+    Inertia.get(route('permission.index'), q, {
         preserveState: preserveState
     });
     return false;
@@ -98,24 +96,18 @@ async function fetchData(q, preserveState = true) {
                             </div>
                             <div class="w-3/5">
                                 <div class="p-4">
-                                    <!-- <Link :href="route('role.create')"> -->
-                                    <BreezeButton class="ml-4 float-right" @click="showModal = true">
-                                        Add Role
+                                    <Link :href="route('permission.create')">
+                                    <BreezeButton class="ml-4 float-right">
+                                        Add Permission
                                     </BreezeButton>
-                                    <!-- </Link> -->
-                                    <Modal :show="showModal" :title="'Create Role'" @close="showModal = false">
-                                        <template #body>
-                                            <CreateRoleComponent :title="'Create Role'"></CreateRoleComponent>
-                                        </template>
-                                        <template #footer>&nbsp;</template>
-                                    </Modal>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
                         <template v-if="trigger_action">
                             <div class="flex">
                                 <div>
-                                    <Link :href="route('role.destroy', 0)" method="delete" :data="{ids : action_ids, action_type : 'multi-delete'}">
+                                    <Link :href="route('permission.destroy', 0)" method="delete" :data="{ids : action_ids, action_type : 'multi-delete'}" as="button">
                                     <BreezeButton class="ml-4">
                                         delete
                                     </BreezeButton>

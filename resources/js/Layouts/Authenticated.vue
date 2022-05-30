@@ -13,7 +13,6 @@ defineProps({
 const showingNavigationDropdown = ref(false);
 
 const menus = ref(usePage().props.value.auth.menus);
-console.log(menus);
 </script>
 
 <template>

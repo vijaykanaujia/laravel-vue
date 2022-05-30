@@ -2,6 +2,7 @@
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import BreezeButton from '@/Components/Button.vue';
 import BreezeInput from '@/Components/Input.vue';
+import BreezeTextarea from '@/Components/Textarea.vue';
 import BreezeLabel from '@/Components/Label.vue';
 import BreezeSelect from '@/Components/Select.vue';
 import BreezeError from '@/Components/InputError.vue';
@@ -11,24 +12,28 @@ import {
     useForm,
     Link
 } from '@inertiajs/inertia-vue3';
+import { propsToAttrMap } from "@vue/shared";
 
 const props = defineProps({
     'title': String,
-    'role': Object,
-    'token': String
+    'parent_menu': Object,
+    'token' : String
 });
-
 const form = useForm({
-    name: props.role.name,
-    guard_name: props.role.guard_name,
+    title: '',
+    description: '',
+    icon: '',
+    page: '',
+    parent_id: 0,
+    position: 0,
+    status: 1,
     _token: props.token
 });
 
 const submit = () => {
-    form.put(route('role.update', props.role.id), {
-        preserveState : true,
+    form.post(route('menu.store'), {
         onSuccess: () => {
-            
+            form.reset()
         },
         onError: (errors) => {
             debugger
@@ -39,19 +44,20 @@ const submit = () => {
 
 <template>
 <Head :title="title" />
+
 <BreezeAuthenticatedLayout>
     <template #header>
         <div class="flex justify-between">
             <div>
-<h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{title}}
-        </h2>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{title}}
+                </h2>
             </div>
             <div>
-                <Link :href="route('role.index')">
-                    <BreezeButton class="ml-4 float-right">
-                        Back
-                    </BreezeButton>
+                <Link :href="route('menu.index')">
+                <BreezeButton class="ml-4 float-right">
+                    Back
+                </BreezeButton>
                 </Link>
             </div>
         </div>
@@ -63,20 +69,21 @@ const submit = () => {
                 <div class="p-6 bg-white border-b border-gray-200">
                     <BreezeValidationErrors class="mb-4" />
                     <form @submit.prevent="submit">
-                        <div class="grid grid-cols-1 gap-2">
+                        <div class="grid grid-cols-4 gap-2">
 
                             <div>
-                                <BreezeLabel for="name" value="Name" />
-                                <BreezeInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" autofocus autocomplete="name" />
-                                <BreezeError :message="form.errors.name" />
+                                <BreezeLabel for="title" value="Menu Title" />
+                                <BreezeInput id="title" type="text" class="mt-1 block w-full" v-model="form.title" autocomplete="title" />
+                                <BreezeError :message="form.errors.title" />
                             </div>
 
                             <div>
-                                <BreezeLabel for="guard_name" value="Guard Name" />
-                                <BreezeSelect :options="[{id : 'web', text : 'WEB', selected : 1},{id : 'api', text : 'API', selected : 0}]" id="guard_name" class="mt-1 block w-full" v-model="form.guard_name" autocomplete="Select Name" />
-                                <BreezeError :message="form.errors.guard_name" />
+                                <BreezeLabel for="page" value="Page" />
+                                <BreezeInput id="page" type="text" class="mt-1 block w-full" v-model="form.page" autocomplete="page" />
+                                <BreezeError :message="form.errors.page" />
                             </div>
-                            <div class="col-span-1">
+
+                            <div class="col-span-4">
 
                                 <div class="flex items-center justify-end">
                                     <BreezeButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">

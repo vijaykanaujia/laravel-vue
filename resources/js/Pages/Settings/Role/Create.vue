@@ -38,7 +38,7 @@ const submit = () => {
 
         <div>
             <BreezeLabel for="name" value="Name" />
-            <BreezeInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" autofocus autocomplete="name" />
+            <BreezeInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" autocomplete="name" />
             <BreezeError :message="form.errors.name" />
         </div>
 

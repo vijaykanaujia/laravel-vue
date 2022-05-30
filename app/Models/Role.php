@@ -10,6 +10,8 @@ class Role extends SpatieRole
 {
     use HasFactory, BaseModelTrait;
 
+    protected $perPage = 10;
+
     public function getDisplayedColumns(){
         return ([
             ['ref' => 'select', 'name' => 'Select'],
