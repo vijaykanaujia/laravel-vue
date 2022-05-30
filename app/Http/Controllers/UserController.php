@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Permission;
+use App\Models\User;
+use App\Http\Requests\StoreUserRequest;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Redirect;
-use App\Http\Requests\Permission\StorePermissionRequest;
 
-class PermissionController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +16,7 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
-        $model = new Permission();
+        $model = new User();
         $props = [
             'page' => $request->get('page', 0),
             'pageSize' => $request->get('pageSize', 10),
@@ -27,13 +26,13 @@ class PermissionController extends Controller
             'orderBy' => $request->get('orderBy', 'desc'),
             'displayedColumns' => $model->getDisplayedColumns(),
             'title' => 'Permission',
-            'with' => ['menu']
+            // 'with' => ['menu']
         ];
         $model = $model->selectCols($props['cols'])->applyFilter($props['filter'])->sortOrder($props['orderField'], $props['orderBy']);
-        $model = $model->handleWith($props['with']);
+        // $model = $model->handleWith($props['with']);
         $model = $model->getBuilder();
         $props['dataSource'] = $model->paginate($props['pageSize'], ['*'], 'page', $props['page']);
-        return Inertia::render('Settings/Permission/Read', $props);
+        return Inertia::render('Settings/User/Read', $props);
     }
 
     /**
@@ -44,51 +43,50 @@ class PermissionController extends Controller
     public function create()
     {
         $props = [
-            'title' => 'Create Permission',
-            'menuList' => getAllSelectInputMenu(),
+            'title' => 'Create User',
             'token' => csrf_token()
         ];
-        return Inertia::render('Settings/Permission/Create', $props);
+        return Inertia::render('Settings/User/Create', $props);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreUserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePermissionRequest $request)
+    public function store(StoreUserRequest $request)
     {
         Permission::create($request->validated());
-        return Redirect::route('permission.index');
+        return Redirect::route('user.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $permission
+     * @param  int  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Permission $permission)
+    public function show(User $user)
     {
         $props = [
-            'title' => 'Permission Details: #'. $permission->id,
-            'permissions' => $permission
+            'title' => 'Permission Details: #'. $user->id,
+            'permissions' => $user
         ];
-        return Inertia::render('Settings/Permission/Show', $props);
+        return Inertia::render('Settings/User/Show', $props);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $permission
+     * @param  int  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Permission $permission)
+    public function edit(User $user)
     {
         $props = [
-            'title' => "Update Permission : #". $permission->id,
-            'permission' => $permission,
+            'title' => "Update Permission : #". $user->id,
+            'permission' => $user,
             'menuList' => getAllSelectInputMenu(),
             'token' => csrf_token()
         ];
@@ -99,29 +97,29 @@ class PermissionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $permission
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StorePermissionRequest $request, Permission $permission)
+    public function update(StoreUserRequest $request, User $user)
     {
-        $permission->update($request->validated());
+        $user->update($request->validated());
         return Redirect::back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $permission
+     * @param  int  $user
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
     {
-        $permission = new Permission();
+        $user = new User();
         if($request->action_type == 'multi-delete'){
-            $permission->whereIn('id', $request->ids)->delete();
+            $user->whereIn('id', $request->ids)->delete();
         }
-        if($request->permission){
-            $permission->find($request->permission)->delete();
+        if($request->user){
+            $user->find($request->user)->delete();
         }
         return Redirect::back();
     }
