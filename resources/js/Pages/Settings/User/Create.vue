@@ -26,7 +26,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('permission.store'), {
+    form.post(route('user.store'), {
         onSuccess: () => {
             form.reset()
         },
@@ -49,7 +49,7 @@ const submit = () => {
                 </h2>
             </div>
             <div>
-                <Link :href="route('permission.index')">
+                <Link :href="route('user.index')">
                 <BreezeButton class="ml-4 float-right">
                     Back
                 </BreezeButton>

@@ -17,17 +17,18 @@ const props = defineProps({
     'title': String,
     'menuList': Object,
     'token' : String,
-    'permission' : Object
+    'user' : Object
 });
 const form = useForm({
-    name: props.permission.name,
-    guard_name: props.permission.guard_name,
-    menu_id: props.permission.menu_id,
+    name: props.user.name,
+    email: props.user.email,
+    password : '',
+    confirm_password: '',
     _token: props.token
 });
-
+console.log(props);
 const submit = () => {
-    form.put(route('permission.update', props.permission.id), {
+    form.put(route('user.update', props.user.id), {
         onSuccess: () => {
 
         },
@@ -50,7 +51,7 @@ const submit = () => {
                 </h2>
             </div>
             <div>
-                <Link :href="route('permission.index')">
+                <Link :href="route('user.index')">
                 <BreezeButton class="ml-4 float-right">
                     Back
                 </BreezeButton>
@@ -68,21 +69,26 @@ const submit = () => {
                         <div class="grid grid-cols-4 gap-2">
 
                             <div>
-                                <BreezeLabel for="name" value="Menu Name" />
-                                <BreezeInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" autocomplete="name" />
+                                <BreezeLabel for="name" value="Name" />
+                                <BreezeInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" />
                                 <BreezeError :message="form.errors.name" />
                             </div>
 
                             <div>
-                                <BreezeLabel for="guard_name" value="guard_name" />
-                                <BreezeSelect :options="[{id : 'web', text : 'WEB'},{id : 'api', text : 'API'}]" id="guard_name" class="mt-1 block w-full" v-model="form.guard_name" />
-                                <BreezeError :message="form.errors.guard_name" />
+                                <BreezeLabel for="email" value="Email" />
+                                <BreezeInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" />
+                                <BreezeError :message="form.errors.email" />
                             </div>
 
                             <div>
-                                <BreezeLabel for="menu_id" value="Menu Name" />
-                                <BreezeSelect :options="menuList" id="menu_id" class="mt-1 block w-full" v-model="form.menu_id" />
-                                <BreezeError :message="form.errors.menu_id" />
+                                <BreezeLabel for="password" value="Password" />
+                                <BreezeInput id="password" type="password" class="mt-1 block w-full" v-model="form.password"/>
+                                <BreezeError :message="form.errors.password" />
+                            </div>
+                            <div>
+                                <BreezeLabel for="confirm_password" value="Confirm Password" />
+                                <BreezeInput id="confirm_password" type="password" class="mt-1 block w-full" v-model="form.confirm_password" />
+                                <BreezeError :message="form.errors.confirm_password" />
                             </div>
 
                             <div class="col-span-4">

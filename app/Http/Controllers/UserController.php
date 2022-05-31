@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\EditUserRequest;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -57,7 +61,9 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        Permission::create($request->validated());
+        $data = $request->validated();
+        $data['password'] = Hash::make($data['password']);
+        User::create($data);
         return Redirect::route('user.index');
     }
 
@@ -85,12 +91,13 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $props = [
-            'title' => "Update Permission : #". $user->id,
-            'permission' => $user,
+            'title' => "Update User : #". $user->id,
+            'user' => $user,
             'menuList' => getAllSelectInputMenu(),
             'token' => csrf_token()
         ];
-        return Inertia::render('Settings/Permission/Edit', $props);
+        // dd($props);
+        return Inertia::render('Settings/User/Edit', $props);
     }
 
     /**
@@ -100,9 +107,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreUserRequest $request, User $user)
+    public function update(EditUserRequest $request, User $user)
     {
-        $user->update($request->validated());
+        $data = Arr::whereNotNull($request->validated());
+        if(Arr::has($data, 'password')){
+            $data['password'] = Hash::make($data['password']);
+        }
+        $user->update($data);
         return Redirect::back();
     }
 

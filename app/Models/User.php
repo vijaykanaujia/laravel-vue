@@ -53,9 +53,9 @@ class User extends Authenticatable
             ['ref' => 'created_at', 'name' => 'Created At', 'data_type' => 'date'],
             ['ref' => 'action', 'name' => 'Action', 'action_type'=> 
             [
-                ['name' => 'edit', 'route_name' => 'permission.edit'],
-                ['name' => 'delete', 'route_name' => 'permission.destroy'],
-                ['name' => 'show', 'route_name' => 'permission.show']
+                ['name' => 'edit', 'route_name' => 'user.edit'],
+                ['name' => 'delete', 'route_name' => 'user.destroy'],
+                ['name' => 'show', 'route_name' => 'user.show']
             ]
             ]
         ]);
