@@ -40,4 +40,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
     Route::resource('user', UserController::class);
+    Route::post('user/role/assign', [UserController::class, 'assignRole'])->name('user.role.assign');
 });

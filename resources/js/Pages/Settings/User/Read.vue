@@ -16,6 +16,9 @@ import {
     watch
 } from "vue";
 
+import Modal from '@/Components/Modal.vue';
+import AssignRoleComponent from '@/Pages/Settings/User/AssignRole.vue';
+
 const props = defineProps({
     'page': Number,
     'pageSize': Number,
@@ -120,5 +123,12 @@ async function fetchData(q, preserveState = true) {
             </div>
         </div>
     </div>
+
+    <Modal :title="'Assign Role'">
+        <template #body>
+            <AssignRoleComponent :title="'Assign Role'"></AssignRoleComponent>
+        </template>
+        <template #footer>&nbsp;</template>
+    </Modal>
 </BreezeAuthenticatedLayout>
 </template>

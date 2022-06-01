@@ -13,6 +13,20 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    /* @var UserService */
+    protected $userService;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param UserService $userService
+     * @return void
+     */
+
+    public function __construnct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -76,7 +90,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         $props = [
-            'title' => 'Permission Details: #'. $user->id,
+            'title' => 'Permission Details: #' . $user->id,
             'permissions' => $user
         ];
         return Inertia::render('Settings/User/Show', $props);
@@ -91,7 +105,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $props = [
-            'title' => "Update User : #". $user->id,
+            'title' => "Update User : #" . $user->id,
             'user' => $user,
             'menuList' => getAllSelectInputMenu(),
             'token' => csrf_token()
@@ -110,7 +124,7 @@ class UserController extends Controller
     public function update(EditUserRequest $request, User $user)
     {
         $data = Arr::whereNotNull($request->validated());
-        if(Arr::has($data, 'password')){
+        if (Arr::has($data, 'password')) {
             $data['password'] = Hash::make($data['password']);
         }
         $user->update($data);
@@ -126,12 +140,22 @@ class UserController extends Controller
     public function destroy(Request $request)
     {
         $user = new User();
-        if($request->action_type == 'multi-delete'){
+        if ($request->action_type == 'multi-delete') {
             $user->whereIn('id', $request->ids)->delete();
         }
-        if($request->user){
+        if ($request->user) {
             $user->find($request->user)->delete();
         }
         return Redirect::back();
     }
+
+    /**
+     * @param Request $request
+     */
+
+     public function postAssignRole(Request $request)
+     {
+         $this->userService->assignRole($request->user, $request->role);
+         return Redirect::back();
+     }
 }
