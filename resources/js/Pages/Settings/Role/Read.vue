@@ -13,8 +13,7 @@ import DataTable from "@/Components/DataTable.vue";
 import {
     ref,
     computed,
-    watch,
-    getCurrentInstance
+    watch
 } from "vue";
 
 import Modal from '@/Components/Modal.vue';
@@ -31,9 +30,10 @@ defineProps({
     'dataSource': Object,
     'title': String,
 });
-const app = getCurrentInstance();
+// const app = getCurrentInstance();
 
 const search_all = ref('');
+const showModal = ref(false);
 
 watch(search_all, (val)=>{
     if(val.length <= 3 & val.length != 0){
@@ -99,11 +99,11 @@ async function fetchData(q, preserveState = true) {
                             <div class="w-3/5">
                                 <div class="p-4">
                                     <!-- <Link :href="route('role.create')"> -->
-                                    <BreezeButton class="ml-4 float-right" @click="app.appContext.config.globalProperties.eventBus.emit('openModal')">
+                                    <BreezeButton class="ml-4 float-right" @click="showModal = true">
                                         Add Role
                                     </BreezeButton>
                                     <!-- </Link> -->
-                                    <Modal :title="'Create Role'">
+                                    <Modal :show="showModal" :title="'Create Role'" @close="showModal = false">
                                         <template #body>
                                             <CreateRoleComponent :title="'Create Role'"></CreateRoleComponent>
                                         </template>

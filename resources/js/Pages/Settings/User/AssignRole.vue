@@ -17,7 +17,6 @@ const props = defineProps({
     'user_id': Number,
 });
 const modalData = app.appContext.config.globalProperties.modalData;
-console.log(modalData);
 const form = useForm({
     user: '',
     roles: '',

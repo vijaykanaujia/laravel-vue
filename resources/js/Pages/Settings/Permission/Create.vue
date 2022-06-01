@@ -17,7 +17,6 @@ const props = defineProps({
     'menuList': Object,
     'token' : String
 });
-console.log(props.menuList);
 const form = useForm({
     name: '',
     guard_name: 'web',

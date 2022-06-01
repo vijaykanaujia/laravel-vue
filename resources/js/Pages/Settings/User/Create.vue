@@ -11,21 +11,24 @@ import {
     useForm,
     Link
 } from '@inertiajs/inertia-vue3';
+import { ref } from "vue";
 
 const props = defineProps({
     'title': String,
-    'token' : String
+    'token' : String,
+    'roles' : Array
 });
-console.log(props.menuList);
 const form = useForm({
     name: '',
     email: '',
     password : '',
     confirm_password: '',
+    roles : [],
     _token: props.token
 });
 
 const submit = () => {
+    debugger;
     form.post(route('user.store'), {
         onSuccess: () => {
             form.reset()
@@ -87,6 +90,12 @@ const submit = () => {
                                 <BreezeLabel for="confirm_password" value="Confirm Password" />
                                 <BreezeInput id="confirm_password" type="password" class="mt-1 block w-full" v-model="form.confirm_password" />
                                 <BreezeError :message="form.errors.confirm_password" />
+                            </div>
+                            <div>
+                                <BreezeLabel for="roles" value="Role" />
+                                <BreezeSelect :options="roles" id="roles" class="mt-1 block w-full" v-model="form.roles" multiple="true" />
+                                <BreezeError :message="form.errors.roles" />
+                                {{form.roles}}
                             </div>
 
                             <div class="col-span-4">

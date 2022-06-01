@@ -57,11 +57,11 @@ function getActionTitle(action) {
     return _.replace(action, '_', ' ');
 }
 
-function openModal(user){
-    app.appContext.config.globalProperties.eventBus.emit('openModal', {
-        user: user
-    });
-}
+// function openModal(user){
+//     app.appContext.config.globalProperties.eventBus.emit('openModal', {
+//         user: user
+//     });
+// }
 </script>
 
 <template>
@@ -116,7 +116,7 @@ function openModal(user){
                                         </svg>
                                     </Link>
                                 </template>
-                                <template v-else-if="action.type == 'modal'">
+                                <!-- <template v-else-if="action.type == 'modal'">
                                     <button @click="openModal(row)">
                                         <svg class="w-6 h-6 stroke-black hover:stroke-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path :d="action.icon ? action.icon : 'M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z'" />
@@ -124,7 +124,7 @@ function openModal(user){
                                     </button>
                                 </template>
                                 <template v-else="true">
-                                </template>
+                                </template> -->
                                 </template>
                             </div>
                         </td>

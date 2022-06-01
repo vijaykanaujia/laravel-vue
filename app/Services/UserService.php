@@ -9,8 +9,7 @@ class UserService {
         $this->user = new User();
     }
 
-    public function assignRole($userId, $roleId) {
-        $user = $this->user->find($userId);
-        $user->assignRole($roleId);
+    public function syncRoles($user, $roles) {
+        return $user->syncRoles($roles);
     }
 }

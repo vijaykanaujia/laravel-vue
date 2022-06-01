@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\EditUserRequest;
 use Inertia\Inertia;
@@ -62,8 +63,10 @@ class UserController extends Controller
     {
         $props = [
             'title' => 'Create User',
-            'token' => csrf_token()
+            'token' => csrf_token(),
+            'roles' => collect(Role::all())->map(function($v){ return ['id' => $v->id ,'text' => $v->name]; })->toArray()
         ];
+
         return Inertia::render('Settings/User/Create', $props);
     }
 
@@ -77,7 +80,9 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $data['password'] = Hash::make($data['password']);
-        User::create($data);
+        if(!empty($data['roles'])){
+            $this->userService->syncRoles(User::create($data), $data['roles']);
+        }
         return Redirect::route('user.index');
     }
 
@@ -108,7 +113,8 @@ class UserController extends Controller
             'title' => "Update User : #" . $user->id,
             'user' => $user,
             'menuList' => getAllSelectInputMenu(),
-            'token' => csrf_token()
+            'token' => csrf_token(),
+            'roles' => collect(Role::all())->map(function($v){ return ['id' => $v->id ,'text' => $v->name]; })->toArray()
         ];
         // dd($props);
         return Inertia::render('Settings/User/Edit', $props);
@@ -128,6 +134,9 @@ class UserController extends Controller
             $data['password'] = Hash::make($data['password']);
         }
         $user->update($data);
+        if(!$user->hasExactRoles($data['roles'])){
+            $this->userService->syncRoles($user, $data['roles']);
+        }
         return Redirect::back();
     }
 
@@ -148,14 +157,4 @@ class UserController extends Controller
         }
         return Redirect::back();
     }
-
-    /**
-     * @param Request $request
-     */
-
-     public function postAssignRole(Request $request)
-     {
-         $this->userService->assignRole($request->user, $request->role);
-         return Redirect::back();
-     }
 }

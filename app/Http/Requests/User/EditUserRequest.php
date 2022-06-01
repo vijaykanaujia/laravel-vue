@@ -28,6 +28,7 @@ class EditUserRequest extends FormRequest
             'email' => 'required|email',
             'password' => 'nullable|min:6',
             'confirm_password' => 'nullable|required_with:password|same:password',
+            'role' => 'required|array'
         ];
     }
 }

@@ -17,13 +17,15 @@ const props = defineProps({
     'title': String,
     'menuList': Object,
     'token' : String,
-    'user' : Object
+    'user' : Object,
+    'roles': Array,
 });
 const form = useForm({
     name: props.user.name,
     email: props.user.email,
     password : '',
     confirm_password: '',
+    roles : _.map(props.user.roles, 'id'),
     _token: props.token
 });
 console.log(props);
@@ -89,6 +91,11 @@ const submit = () => {
                                 <BreezeLabel for="confirm_password" value="Confirm Password" />
                                 <BreezeInput id="confirm_password" type="password" class="mt-1 block w-full" v-model="form.confirm_password" />
                                 <BreezeError :message="form.errors.confirm_password" />
+                            </div>
+                            <div>
+                                <BreezeLabel for="roles" value="Role" />
+                                <BreezeSelect :options="roles" id="roles" class="mt-1 block w-full" v-model="form.roles" multiple />
+                                <BreezeError :message="form.errors.roles" />
                             </div>
 
                             <div class="col-span-4">

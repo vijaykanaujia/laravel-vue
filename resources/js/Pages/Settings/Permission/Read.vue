@@ -29,8 +29,6 @@ const props = defineProps({
     'with' : Array,
 });
 
-console.log(props.dataSource);
-
 const search_all = ref('');
 
 watch(search_all, (val)=>{
