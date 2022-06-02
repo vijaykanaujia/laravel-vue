@@ -2,12 +2,19 @@
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import {
     Head,
-    Link
+    Link,
+useForm
 } from "@inertiajs/inertia-vue3";
 
-
-defineProps({
+const props = defineProps({
     'title': String,
+    'role': Object,
+    'menus': Object,
+    'token': String,
+});
+
+const form = useForm({
+    permissions: []
 });
 </script>
 

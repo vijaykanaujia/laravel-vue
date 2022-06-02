@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\Menu;
 use Inertia\Inertia;
 use App\Http\Requests\Role\StoreRoleRequest;
 use Illuminate\Support\Facades\Redirect;
@@ -122,17 +123,23 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function permission(Request $request, Role $role)
+    public function permission(Request $request, $role)
     {
-        $props = [
-            'title' => 'Role Permissions',
-            'token' => csrf_token()
-        ];
-        
-        if($role){
+        if($request->isMethod('GET')){
+            $props = [
+                'title' => 'Role Permissions',
+                'role' => Role::with('permissions')->find($role),
+                'menus' => Menu::with('permissions')->get(),
+                'token' => csrf_token()
+            ];
+            return Inertia::render('Settings/Role/Permission', $props);
+        }
+        if($request->isMethod('POST')){
+            $role = Role::find($role);
             $role->syncPermissions($request->permissions);
         }
 
-        return Inertia::render('Settings/Role/Permission', $props);
+        return Redirect::route('role.index');
+        
     }
 }
