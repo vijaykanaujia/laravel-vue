@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\EditUserRequest;
+use App\Services\UserService;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Arr;
@@ -24,10 +25,19 @@ class UserController extends Controller
      * @return void
      */
 
-    public function __construnct(UserService $userService)
+    public function __construct(UserService $userService)
     {
         $this->userService = $userService;
     }
+
+    /**
+	 * @return UserService
+	 */
+	public function getUserService()
+	{
+		return $this->userService;
+	}
+
     /**
      * Display a listing of the resource.
      *
@@ -78,11 +88,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $data = $request->validated();
-        $data['password'] = Hash::make($data['password']);
-        if(!empty($data['roles'])){
-            $this->userService->syncRoles(User::create($data), $data['roles']);
-        }
+        $this->userService->store($request->validated());
         return Redirect::route('user.index');
     }
 
@@ -127,16 +133,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(EditUserRequest $request, User $user)
+    public function update(EditUserRequest $request, $user)
     {
-        $data = Arr::whereNotNull($request->validated());
-        if (Arr::has($data, 'password')) {
-            $data['password'] = Hash::make($data['password']);
-        }
-        $user->update($data);
-        if(!$user->hasExactRoles($data['roles'])){
-            $this->userService->syncRoles($user, $data['roles']);
-        }
+        $this->userService->update($user, $request->validated());
         return Redirect::back();
     }
 

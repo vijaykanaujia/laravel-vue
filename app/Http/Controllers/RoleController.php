@@ -116,4 +116,23 @@ class RoleController extends Controller
         }
         return Redirect::back();
     }
+
+    /**
+     * Remove the specified resource from storage.
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function permission(Request $request, Role $role)
+    {
+        $props = [
+            'title' => 'Role Permissions',
+            'token' => csrf_token()
+        ];
+        
+        if($role){
+            $role->syncPermissions($request->permissions);
+        }
+
+        return Inertia::render('Settings/Role/Permission', $props);
+    }
 }

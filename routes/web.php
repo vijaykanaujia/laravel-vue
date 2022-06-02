@@ -38,7 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('product', ProductController::class);
     Route::resource('menu', MenuController::class);
     Route::resource('role', RoleController::class);
+    Route::any('role/{role}/permission', [RoleController::class, 'permission'])->name('role.permission');
     Route::resource('permission', PermissionController::class);
     Route::resource('user', UserController::class);
-    Route::post('user/role/assign', [UserController::class, 'assignRole'])->name('user.role.assign');
 });

@@ -26,7 +26,7 @@ const form = useForm({
     roles : [],
     _token: props.token
 });
-
+console.log(props.roles);
 const submit = () => {
     debugger;
     form.post(route('user.store'), {
@@ -93,7 +93,15 @@ const submit = () => {
                             </div>
                             <div>
                                 <BreezeLabel for="roles" value="Role" />
-                                <BreezeSelect :options="roles" id="roles" class="mt-1 block w-full" v-model="form.roles" multiple="true" />
+                                <!-- <BreezeSelect :options="roles" id="roles" class="mt-1 block w-full" v-model="form.roles" :multiple="true" /> -->
+                                <select class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" v-model="form.roles" multiple>
+                                    <template v-if="Object.keys(roles).length">
+                                        <option v-for="option in roles" :key="option.id" :value="option.id">{{option.text}}</option>
+                                    </template>
+                                    <template v-else>
+                                        <option value=""></option>
+                                    </template>
+                                </select>
                                 <BreezeError :message="form.errors.roles" />
                                 {{form.roles}}
                             </div>
