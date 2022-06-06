@@ -135,6 +135,7 @@ class RoleController extends Controller
             return Inertia::render('Settings/Role/Permission', $props);
         }
         if($request->isMethod('POST')){
+            // dd($request->permissions);
             $role = Role::find($role);
             $role->syncPermissions($request->permissions);
         }

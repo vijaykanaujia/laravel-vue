@@ -21,10 +21,6 @@ class UserService {
         return $user;
     }
 
-    public function test(){
-        return $this->user->all();    
-    }
-
     public function update($id, $data) {
 
         $data = Arr::whereNotNull($data);
@@ -37,6 +33,14 @@ class UserService {
             $this->userService->syncRoles($user, $data['roles']);
         }
         return $user;
+    }
+
+    public function destroy($request){
+        if ($request->action_type == 'multi-delete') {
+            $this->user->whereIn('id', $request->ids)->delete();
+        }else{
+            $this->user->find($request->user)->delete();
+        }
     }
 
     protected function checkHasExactRoles($user, $roles = []) {

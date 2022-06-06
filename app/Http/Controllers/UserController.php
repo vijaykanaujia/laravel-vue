@@ -147,13 +147,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
-        $user = new User();
-        if ($request->action_type == 'multi-delete') {
-            $user->whereIn('id', $request->ids)->delete();
-        }
-        if ($request->user) {
-            $user->find($request->user)->delete();
-        }
+        $this->userService->destroy($request);
         return Redirect::back();
     }
 }
