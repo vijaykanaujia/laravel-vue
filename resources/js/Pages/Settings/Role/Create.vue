@@ -1,34 +1,3 @@
-<script setup>
-import BreezeButton from '@/Components/Button.vue';
-import BreezeInput from '@/Components/Input.vue';
-import BreezeLabel from '@/Components/Label.vue';
-import BreezeSelect from '@/Components/Select.vue';
-import BreezeError from '@/Components/InputError.vue';
-import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
-import {
-    Head,
-    useForm
-} from '@inertiajs/inertia-vue3';
-
-defineProps({
-    'title': String,
-});
-
-const form = useForm({
-    name: '',
-    guard_name: '',
-    _token : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-});
-
-const submit = () => {
-    form.post(route('role.store'), {
-        onSuccess: () => {form.reset()},
-        onError: (errors) => {debugger},
-    });
-};
-
-</script>
-
 <template>
 <Head :title="title" />
 
@@ -58,3 +27,39 @@ const submit = () => {
     </div>
 </form>
 </template>
+
+<script setup>
+import BreezeButton from '@/Components/Button.vue';
+import BreezeInput from '@/Components/Input.vue';
+import BreezeLabel from '@/Components/Label.vue';
+import BreezeSelect from '@/Components/Select.vue';
+import BreezeError from '@/Components/InputError.vue';
+import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
+import {
+    Head,
+    useForm,
+    useToast
+} from "@/Utils/vuex-helpers"
+
+defineProps({
+    'title': String,
+});
+const toast = useToast();
+const form = useForm({
+    name: '',
+    guard_name: '',
+    _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+});
+
+const submit = () => {
+    form.post(route('role.store'), {
+        onSuccess: () => {
+            form.reset()
+            toast.success('Role created successfully');
+        },
+        onError: (errors) => {
+            toast.error('Something went wrong!');
+        },
+    });
+};
+</script>

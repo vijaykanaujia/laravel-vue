@@ -2,19 +2,16 @@
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import BreezeButton from "@/Components/Button.vue";
 import Pagination from '@/Components/Pagination.vue'
-import {
-    Head,
-    Link
-} from "@inertiajs/inertia-vue3";
-import {
-    Inertia
-} from '@inertiajs/inertia'
 import DataTable from "@/Components/DataTable.vue";
 import {
-    ref,
+    Head,
+    Link,
+    Inertia,
     computed,
-    watch
-} from "vue";
+    watch,
+    useToast,
+    ref
+} from "@/Utils/vuex-helpers";
 
 defineProps({
     'page': Number,
@@ -27,14 +24,18 @@ defineProps({
     'dataSource': Object,
     'title': String,
 });
-
+const toast = useToast();
 const search_all = ref('');
 
-watch(search_all, (val)=>{
-    if(val.length <= 3 & val.length != 0){
+watch(search_all, (val) => {
+    if (val.length <= 3 & val.length != 0) {
         return;
     }
-    let q = val.length ? {filter : JSON.stringify({all : val})} : {}
+    let q = val.length ? {
+        filter: JSON.stringify({
+            all: val
+        })
+    } : {}
     fetchData(q);
 });
 
@@ -43,6 +44,7 @@ const activate_action = ref(false);
 const trigger_action = computed(() => {
     return activate_action.value;
 });
+
 function fnMultiAction(data) {
     activate_action.value = data.length ? true : false;
     action_ids.value = data;
@@ -52,13 +54,28 @@ function fnSortingOrder(data) {
     fetchData(data);
 }
 
-
-
 async function fetchData(q, preserveState = true) {
     Inertia.get(route('menu.index'), q, {
         preserveState: preserveState
     });
     return false;
+}
+
+const multiDelete = () => {
+    Inertia.delete(route('menu.destroy', 0), {
+        data: {
+            ids: action_ids.value,
+            action_type: 'multi-delete'
+        },
+        onBefore: () => confirm('Are you sure you want to delete this menus?'),
+        onSuccess: page => {
+            activate_action.value = false;
+            toast.success('Menus deleted successfully');
+        },
+        onError: errors => {
+            toast.error('Something went wrong!');
+        },
+    })
 }
 </script>
 
@@ -104,11 +121,9 @@ async function fetchData(q, preserveState = true) {
                         <template v-if="trigger_action">
                             <div class="flex">
                                 <div>
-                                    <Link :href="route('menu.destroy', 0)" method="delete" :data="{ids : action_ids, action_type : 'multi-delete'}" as="button">
-                                    <BreezeButton class="ml-4">
+                                    <BreezeButton @click="multiDelete" class="ml-4">
                                         delete
                                     </BreezeButton>
-                                    </Link>
                                 </div>
                             </div>
                         </template>

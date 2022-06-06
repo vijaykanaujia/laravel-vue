@@ -2,19 +2,16 @@
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import BreezeButton from "@/Components/Button.vue";
 import Pagination from '@/Components/Pagination.vue'
-import {
-    Head,
-    Link
-} from "@inertiajs/inertia-vue3";
-import {
-    Inertia
-} from '@inertiajs/inertia'
 import DataTable from "@/Components/DataTable.vue";
 import {
-    ref,
+    Head,
+    Link,
+    Inertia,
     computed,
-    watch
-} from "vue";
+    watch,
+    useToast,
+    ref
+} from "@/Utils/vuex-helpers";
 
 import Modal from '@/Components/Modal.vue';
 import AssignRoleComponent from '@/Pages/Settings/User/AssignRole.vue';
@@ -31,7 +28,7 @@ const props = defineProps({
     'title': String,
     // 'with' : Array,
 });
-
+const toast = useToast();
 const search_all = ref('');
 
 watch(search_all, (val)=>{
@@ -56,13 +53,27 @@ function fnSortingOrder(data) {
     fetchData(data);
 }
 
-
-
 async function fetchData(q, preserveState = true) {
     Inertia.get(route('user.index'), q, {
         preserveState: preserveState
     });
     return false;
+}
+const multiDelete = () => {
+    Inertia.delete(route('user.destroy', 0), {
+        data: {
+            ids: action_ids.value,
+            action_type: 'multi-delete'
+        },
+        onBefore: () => confirm('Are you sure you want to delete this user?'),
+        onSuccess: page => {
+            activate_action.value = false;
+            toast.success('Users deleted successfully');
+        },
+        onError: errors => {
+            toast.error('Something went wrong!');
+        },
+    })
 }
 </script>
 
@@ -108,11 +119,9 @@ async function fetchData(q, preserveState = true) {
                         <template v-if="trigger_action">
                             <div class="flex">
                                 <div>
-                                    <Link :href="route('user.destroy', 0)" method="delete" :data="{ids : action_ids, action_type : 'multi-delete'}" as="button">
-                                    <BreezeButton class="ml-4">
+                                    <BreezeButton @click="multiDelete" class="ml-4">
                                         delete
                                     </BreezeButton>
-                                    </Link>
                                 </div>
                             </div>
                         </template>

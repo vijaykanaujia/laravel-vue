@@ -10,8 +10,10 @@ import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
 import {
     Head,
     useForm,
-    Link
-} from '@inertiajs/inertia-vue3';
+    Link,
+    useToast,
+    Inertia
+} from "@/Utils/vuex-helpers";
 
 const props = defineProps({
     'title': String,
@@ -19,6 +21,7 @@ const props = defineProps({
     'parent_menu' : Object,
     'token' : String
 });
+const toast = useToast();
 const form = useForm({
     title: props.menu.title,
     description: props.menu.description,
@@ -33,10 +36,12 @@ const form = useForm({
 const submit = () => {
     form.put(route('menu.update', props.menu.id), {
         onSuccess: () => {
-            
+            form.reset();
+            toast.success('Menu created successfully');
+            Inertia.get(route('menu.index'));
         },
         onError: (errors) => {
-            
+            toast.error('Something went wrong!');
         },
     });
 };

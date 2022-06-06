@@ -141,6 +141,5 @@ class RoleController extends Controller
         }
 
         return Redirect::route('role.index');
-        
     }
 }

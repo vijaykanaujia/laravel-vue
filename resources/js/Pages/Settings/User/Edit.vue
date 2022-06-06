@@ -2,16 +2,10 @@
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import BreezeButton from '@/Components/Button.vue';
 import BreezeInput from '@/Components/Input.vue';
-import BreezeTextarea from '@/Components/Textarea.vue';
 import BreezeLabel from '@/Components/Label.vue';
-import BreezeSelect from '@/Components/Select.vue';
 import BreezeError from '@/Components/InputError.vue';
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
-import {
-    Head,
-    useForm,
-    Link
-} from '@inertiajs/inertia-vue3';
+import { Head, useForm, Link, useToast, Inertia } from "@/Utils/vuex-helpers"
 
 const props = defineProps({
     'title': String,
@@ -20,6 +14,7 @@ const props = defineProps({
     'user' : Object,
     'roles': Array,
 });
+const toast = useToast();
 const form = useForm({
     name: props.user.name,
     email: props.user.email,
@@ -32,10 +27,11 @@ console.log(form);
 const submit = () => {
     form.put(route('user.update', props.user.id), {
         onSuccess: () => {
-
+            toast.success('User updated successfully');
+            Inertia.get(route('user.index'));
         },
         onError: (errors) => {
-            debugger
+            toast.error('Something went wrong!');
         },
     });
 };

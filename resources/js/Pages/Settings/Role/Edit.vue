@@ -9,15 +9,17 @@ import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
 import {
     Head,
     useForm,
-    Link
-} from '@inertiajs/inertia-vue3';
+    Link,
+    useToast,
+    Inertia
+} from "@/Utils/vuex-helpers"
 
 const props = defineProps({
     'title': String,
     'role': Object,
     'token': String
 });
-
+const toast = useToast();
 const form = useForm({
     name: props.role.name,
     guard_name: props.role.guard_name,
@@ -28,10 +30,12 @@ const submit = () => {
     form.put(route('role.update', props.role.id), {
         preserveState: true,
         onSuccess: () => {
-
+            form.reset();
+            toast.success('Role updated successfully');
+            Inertia.get(route('role.index'));
         },
         onError: (errors) => {
-            debugger
+            toast.error('Something went wrong!');
         },
     });
 };

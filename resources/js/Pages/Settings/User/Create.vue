@@ -3,38 +3,39 @@ import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import BreezeButton from '@/Components/Button.vue';
 import BreezeInput from '@/Components/Input.vue';
 import BreezeLabel from '@/Components/Label.vue';
-import BreezeSelect from '@/Components/Select.vue';
 import BreezeError from '@/Components/InputError.vue';
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
 import {
     Head,
     useForm,
-    Link
-} from '@inertiajs/inertia-vue3';
-import { ref } from "vue";
+    Link,
+    useToast,
+    Inertia
+} from "@/Utils/vuex-helpers";
 
 const props = defineProps({
     'title': String,
-    'token' : String,
-    'roles' : Array
+    'token': String,
+    'roles': Array
 });
+const toast = useToast();
 const form = useForm({
     name: '',
     email: '',
-    password : '',
+    password: '',
     confirm_password: '',
-    roles : [],
+    roles: [],
     _token: props.token
 });
-console.log(props.roles);
 const submit = () => {
-    debugger;
     form.post(route('user.store'), {
         onSuccess: () => {
-            form.reset()
+            form.reset();
+            toast.success('User created successfully');
+            Inertia.get(route('user.index'));
         },
         onError: (errors) => {
-            debugger
+            toast.error('Something went wrong!');
         },
     });
 };
@@ -83,7 +84,7 @@ const submit = () => {
 
                             <div>
                                 <BreezeLabel for="password" value="Password" />
-                                <BreezeInput id="password" type="password" class="mt-1 block w-full" v-model="form.password"/>
+                                <BreezeInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" />
                                 <BreezeError :message="form.errors.password" />
                             </div>
                             <div>

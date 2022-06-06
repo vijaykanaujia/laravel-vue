@@ -2,7 +2,6 @@
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import BreezeButton from '@/Components/Button.vue';
 import BreezeInput from '@/Components/Input.vue';
-import BreezeTextarea from '@/Components/Textarea.vue';
 import BreezeLabel from '@/Components/Label.vue';
 import BreezeSelect from '@/Components/Select.vue';
 import BreezeError from '@/Components/InputError.vue';
@@ -10,8 +9,10 @@ import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
 import {
     Head,
     useForm,
-    Link
-} from '@inertiajs/inertia-vue3';
+    Link,
+    useToast,
+    Inertia
+} from "@/Utils/vuex-helpers"
 
 const props = defineProps({
     'title': String,
@@ -19,6 +20,7 @@ const props = defineProps({
     'token' : String,
     'permission' : Object
 });
+const toast = useToast();
 const form = useForm({
     name: props.permission.name,
     guard_name: props.permission.guard_name,
@@ -29,10 +31,12 @@ const form = useForm({
 const submit = () => {
     form.put(route('permission.update', props.permission.id), {
         onSuccess: () => {
-
+            form.reset();
+            toast.success('Permission created successfully');
+            Inertia.get(route('permission.index'));
         },
         onError: (errors) => {
-            debugger
+            toast.error('Something went wrong!');
         },
     });
 };

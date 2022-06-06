@@ -39,7 +39,8 @@ require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        $props = ['title' => 'Dashboard'];
+        return Inertia::render('Dashboard', $props);
     })->name('dashboard');
     Route::resource('product', ProductController::class);
     Route::resource('menu', MenuController::class);

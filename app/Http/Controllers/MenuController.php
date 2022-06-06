@@ -59,7 +59,7 @@ class MenuController extends Controller
     public function store(StoreMenuRequest $request)
     {
         Menu::create($request->validated());
-        return Redirect::route('menu.index');
+        return Redirect::back();
     }
 
     /**

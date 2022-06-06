@@ -89,7 +89,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $this->userService->store($request->validated());
-        return Redirect::route('user.index');
+        return Redirect::back();
     }
 
     /**

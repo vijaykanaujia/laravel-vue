@@ -9,14 +9,17 @@ import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
 import {
     Head,
     useForm,
-    Link
-} from '@inertiajs/inertia-vue3';
+    Link,
+    useToast,
+    Inertia
+} from "@/Utils/vuex-helpers"
 
 const props = defineProps({
     'title': String,
     'menuList': Object,
     'token' : String
 });
+const toast = useToast();
 const form = useForm({
     name: '',
     guard_name: 'web',
@@ -27,10 +30,12 @@ const form = useForm({
 const submit = () => {
     form.post(route('permission.store'), {
         onSuccess: () => {
-            form.reset()
+            form.reset();
+            toast.success('Permission created successfully');
+            Inertia.get(route('user.index'));
         },
         onError: (errors) => {
-            debugger
+            toast.error('Something went wrong!');
         },
     });
 };
