@@ -5,6 +5,12 @@ import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
 // import mitt from 'mitt';
 // const eventBus = mitt();
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
+const options = {
+    // You can set your default options here
+};
 
 const appName = window.document.getElementsByTagName('title')[0] ?.innerText || 'Laravel';
 
@@ -15,6 +21,8 @@ createInertiaApp({
         const myApp =  createApp({ render: () => h(app, props) })
             .use(plugin)
             .mixin({ methods: { route } });
+            myApp.use(Toast, options);
+            myApp.mixin(require('./base'))
             // myApp.config.globalProperties.eventBus = eventBus;
             // myApp.config.globalProperties.modalData = ref({});
             return myApp.mount(el);

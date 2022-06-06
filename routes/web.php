@@ -29,6 +29,12 @@ Route::get('/', function () {
     ]);
 })->name('guest');
 
+Route::get('language/{language}', function ($language) {
+    Session()->put('locale', $language);
+
+    return redirect()->back();
+})->name('language');
+
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function () {

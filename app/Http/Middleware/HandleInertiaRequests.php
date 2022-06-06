@@ -39,11 +39,15 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
                 'can' => $request->user() ? $request->user()->getAllPermissions()->pluck('name') : [],
-                'menus' => $request->user() ? (new MenuRepository())->getMenu($request->user()) : []
+                'menus' => $request->user() ? (new MenuRepository())->getMenu($request->user()) : [],
             ],
             'ziggy' => function () {
                 return (new Ziggy)->toArray();
             },
+            'locale' => function () {
+                return app()->getLocale();
+            },
+            'language' => getLanguageArray(),
         ]);
     }
 }
