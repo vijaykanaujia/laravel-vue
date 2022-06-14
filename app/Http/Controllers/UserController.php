@@ -98,11 +98,11 @@ class UserController extends Controller
      * @param  int  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($user)
     {
         $props = [
-            'title' => 'Permission Details: #' . $user->id,
-            'permissions' => $user
+            'title' => 'Permission Details: #' . $user,
+            'user' => $this->userService->show($user)
         ];
         return Inertia::render('Settings/User/Show', $props);
     }

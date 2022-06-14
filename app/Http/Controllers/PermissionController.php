@@ -73,7 +73,7 @@ class PermissionController extends Controller
     {
         $props = [
             'title' => 'Permission Details: #'. $permission->id,
-            'permissions' => $permission
+            'permissions' => $permission->toArray()
         ];
         return Inertia::render('Settings/Permission/Show', $props);
     }

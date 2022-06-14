@@ -1,11 +1,10 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { computed, Link, usePage, ref } from '@/Utils/vuex-helpers';
 import BreezeApplicationLogo from '@/Components/ApplicationLogo.vue';
 import BreezeDropdown from '@/Components/Dropdown.vue';
 import BreezeDropdownLink from '@/Components/DropdownLink.vue';
 import BreezeNavLink from '@/Components/NavLink.vue';
 import BreezeResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link, usePage } from '@inertiajs/inertia-vue3';
 
 defineProps({
     menus: Object,

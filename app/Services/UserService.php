@@ -43,6 +43,10 @@ class UserService {
         }
     }
 
+    public function show($user){
+        return $this->user->with('roles.permissions')->find($user)->toArray();
+    }
+
     protected function checkHasExactRoles($user, $roles = []) {
         $roles = Role::where('id', $roles)->get();
         return $user->hasExactRoles($roles);

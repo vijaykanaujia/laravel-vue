@@ -11,11 +11,12 @@ class Menu extends BaseModel
     use HasFactory;
     public $timestamps = false;
 
-    protected $relations = [
-        'permissions',
-    ];
+    // protected $relations = [
+    //     'permissions',
+    // ];
 
     protected $guarded = [];
+    protected $with = ['parent'];
 
     public function getDisplayedColumns(){
         return ([
@@ -75,6 +76,10 @@ class Menu extends BaseModel
 
     public function permissions()
     {
-        return $this->hasMany(permission::class);
+        return $this->hasMany(Permission::class);
+    }
+
+    public function parent(){
+        return $this->belongsTo($this, 'parent_id');
     }
 }

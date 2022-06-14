@@ -15,6 +15,7 @@ class Permission extends SpatiePermission
     protected $perPage = 10;
 
     protected $relations = ['menu'];
+    protected $with = ['menu'];
 
     public function getDisplayedColumns(){
         return ([
