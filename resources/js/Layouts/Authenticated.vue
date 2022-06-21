@@ -91,6 +91,11 @@ const menus = ref(usePage().props.value.auth.menus);
                         <BreezeResponsiveNavLink :href="route('product.index')" :active="route().current('product.index')">
                             Product
                         </BreezeResponsiveNavLink>
+                        <template v-if="menus">
+                            <BreezeResponsiveNavLink v-for="menu in menus" :key="menu.id" :href="route(menu.page ? menu.page : 'guest')" :active="route().current(menu.page ? menu.page : 'guest')">
+                                {{menu.title}}
+                            </BreezeResponsiveNavLink>
+                        </template>
                     </div>
 
                     <!-- Responsive Settings Options -->

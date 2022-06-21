@@ -6,23 +6,8 @@ import moment from "moment";
 
 defineProps({
     title: String,
-    user: Object
+    model: Object
 });
-
-const badge = ref("bg-blue-100 text-blue-800 text-xs font-semibold m-1 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800");
-
-const getRoles = (roles) => {
-
-    return _.join(_.map(roles, (v) => v.name), ',');
-}
-const getPermissions = (permissions) => {
-
-    let per = [];
-    _.forEach(permissions, (v) => {
-         per.push(_.map(v.permissions, (v) => '<span class="'+badge.value+'">' + v.name + '</span>'));
-    });
-    return _.join(per, "~");
-}
 </script>
 
 <template>
@@ -39,7 +24,7 @@ const getPermissions = (permissions) => {
                     </h2>
                 </div>
                 <div>
-                    <Link :href="route('user.index')">
+                    <Link :href="route('role.index')">
                         <BreezeButton class="ml-4 float-right">
                             Back
                         </BreezeButton>
@@ -55,24 +40,20 @@ const getPermissions = (permissions) => {
                         <table class="table-auto w-full     ">
                             <tbody>
                                 <tr>
-                                    <td>Name</td>
-                                    <td>{{user.name}}</td>
+                                    <td>Id</td>
+                                    <td>{{model.id}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Email</td>
-                                    <td>{{user.email}}</td>
+                                    <td>Name</td>
+                                    <td>{{model.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Guard Name</td>
+                                    <td>{{model.guard_name}}</td>
                                 </tr>
                                 <tr>
                                     <td>Created At</td>
-                                    <td>{{moment(user.created_at).format('DD/MM/YY')}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Role</td>
-                                    <td>{{getRoles(user.roles)}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Permissions</td>
-                                    <td><div v-html="getPermissions(user.roles)"></div></td>
+                                    <td>{{moment(model.created_at).format('DD/MM/YY')}}</td>
                                 </tr>
                             </tbody>
                         </table>

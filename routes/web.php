@@ -8,6 +8,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +32,7 @@ Route::get('/', function () {
 
 Route::get('language/{language}', function ($language) {
     Session()->put('locale', $language);
-
-    return redirect()->back();
+    return Redirect::back();
 })->name('language');
 
 require __DIR__.'/auth.php';

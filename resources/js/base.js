@@ -6,10 +6,7 @@ module.exports = {
          * Translate the given key.
          */
         __(key, replace = {}) {
-            var translation = usePage().props.value.language[key]
-                ? this.$page.language[key]
-                : key
-
+            var translation = _.get(usePage().props.value.language, key);
             Object.keys(replace).forEach(function (key) {
                 translation = translation.replace(':' + key, replace[key])
             });

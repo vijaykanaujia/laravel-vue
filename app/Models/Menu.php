@@ -11,9 +11,9 @@ class Menu extends BaseModel
     use HasFactory;
     public $timestamps = false;
 
-    // protected $relations = [
-    //     'permissions',
-    // ];
+    protected $relations = [
+        'permissions',
+    ];
 
     protected $guarded = [];
     protected $with = ['parent'];

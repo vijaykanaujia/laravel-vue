@@ -68,7 +68,12 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        //
+        $model = Role::findOrFail($id);
+        $props = [
+            'title' => 'Role',
+            'model' => $model
+        ];
+        return Inertia::render('Settings/Role/Show', $props);
     }
 
     /**

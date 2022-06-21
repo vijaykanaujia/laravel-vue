@@ -11,7 +11,7 @@ import { computed, usePage, Link } from '@/Utils/vuex-helpers';
 const selectable_locale = computed(() => {
     return [
         {name : 'en', selected : usePage().props.value.locale == 'en'},
-        {name : 'de', selected : usePage().props.value.locale == 'de'},
+        {name : 'nl', selected : usePage().props.value.locale == 'nl'},
     ]
 });
 </script>
