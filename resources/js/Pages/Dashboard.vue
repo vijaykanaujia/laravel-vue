@@ -1,6 +1,5 @@
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
-import ParentComponent from '@/Pages/Vue3Tutorial/parent.vue'
 
 import { Head, useToast, onMounted } from "@/Utils/vuex-helpers"
 
@@ -39,7 +38,6 @@ defineProps({
                     <div class="p-6 bg-white border-b border-gray-200">
                         <div>language test : {{__('dashboard.test')}}</div>
                         You're logged in!
-                        <ParentComponent />
                     </div>
                 </div>
             </div>

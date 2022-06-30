@@ -18,6 +18,7 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Role::class);
         $model = new Role();
         $props = [
             'page' => $request->get('page', 0),
@@ -42,6 +43,7 @@ class RoleController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Role::class);
         $props = [
             'title' => 'Create Role',
         ];
@@ -56,6 +58,7 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
+        $this->authorize('create', Role::class);
         Role::create($request->validated());
         return Redirect::back();
     }
@@ -68,6 +71,7 @@ class RoleController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('view', Role::class);
         $model = Role::findOrFail($id);
         $props = [
             'title' => 'Role',
@@ -84,6 +88,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        $this->authorize('update', Role::class);
         $props = [
             'title' => "Update Role : #". $role->id,
             'role' => $role,
@@ -101,6 +106,7 @@ class RoleController extends Controller
      */
     public function update(StoreRoleRequest $request, Role $role)
     {
+        $this->authorize('update', Role::class);
         $role->update($request->validated());
         return Redirect::back();
     }
@@ -113,6 +119,7 @@ class RoleController extends Controller
      */
     public function destroy(Request $request)
     {
+        $this->authorize('delete', Role::class);
         $role = new Role();
         if($request->action_type == 'multi-delete'){
             $role->whereIn('id', $request->ids)->delete();
@@ -130,6 +137,7 @@ class RoleController extends Controller
      */
     public function permission(Request $request, $role)
     {
+        $this->authorize('syncPermission', Role::class);
         if($request->isMethod('GET')){
             $props = [
                 'title' => 'Role Permissions',
@@ -140,7 +148,6 @@ class RoleController extends Controller
             return Inertia::render('Settings/Role/Permission', $props);
         }
         if($request->isMethod('POST')){
-            // dd($request->permissions);
             $role = Role::find($role);
             $role->syncPermissions($request->permissions);
         }

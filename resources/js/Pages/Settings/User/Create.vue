@@ -104,7 +104,6 @@ const submit = () => {
                                     </template>
                                 </select>
                                 <BreezeError :message="form.errors.roles" />
-                                {{form.roles}}
                             </div>
 
                             <div class="col-span-4">

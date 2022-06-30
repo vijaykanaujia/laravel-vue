@@ -17,6 +17,7 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Permission::class);
         $model = new Permission();
         $props = [
             'page' => $request->get('page', 0),
@@ -43,6 +44,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Permission::class);
         $props = [
             'title' => 'Create Permission',
             'menuList' => getAllSelectInputMenu(),
@@ -59,8 +61,9 @@ class PermissionController extends Controller
      */
     public function store(StorePermissionRequest $request)
     {
+        $this->authorize('create', Permission::class);
         Permission::create($request->validated());
-        return Redirect::route('permission.index');
+        return Redirect::back();
     }
 
     /**
@@ -71,6 +74,7 @@ class PermissionController extends Controller
      */
     public function show(Permission $permission)
     {
+        $this->authorize('view', Permission::class);
         $props = [
             'title' => 'Permission Details: #'. $permission->id,
             'permissions' => $permission->toArray()
@@ -86,6 +90,7 @@ class PermissionController extends Controller
      */
     public function edit(Permission $permission)
     {
+        $this->authorize('update', Permission::class);
         $props = [
             'title' => "Update Permission : #". $permission->id,
             'permission' => $permission,
@@ -104,6 +109,7 @@ class PermissionController extends Controller
      */
     public function update(StorePermissionRequest $request, Permission $permission)
     {
+        $this->authorize('update', Permission::class);
         $permission->update($request->validated());
         return Redirect::back();
     }
@@ -116,6 +122,7 @@ class PermissionController extends Controller
      */
     public function destroy(Request $request)
     {
+        $this->authorize('delete', Permission::class);
         $permission = new Permission();
         if($request->action_type == 'multi-delete'){
             $permission->whereIn('id', $request->ids)->delete();

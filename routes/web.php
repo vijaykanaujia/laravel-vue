@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProductController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,11 +29,6 @@ Route::get('/', function () {
     ]);
 })->name('guest');
 
-Route::get('language/{language}', function ($language) {
-    Session()->put('locale', $language);
-    return Redirect::back();
-})->name('language');
-
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -42,10 +36,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $props = ['title' => 'Dashboard'];
         return Inertia::render('Dashboard', $props);
     })->name('dashboard');
-    Route::resource('product', ProductController::class);
     Route::resource('menu', MenuController::class);
     Route::resource('role', RoleController::class);
     Route::any('role/{role}/permission', [RoleController::class, 'permission'])->name('role.permission');
     Route::resource('permission', PermissionController::class);
     Route::resource('user', UserController::class);
+
+    Route::get('language/{language}', function ($language) {
+        Session()->put('locale', $language);
+        return Redirect::route('dashboard');
+    })->name('language');
 });

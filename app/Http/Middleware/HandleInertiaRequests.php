@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 use App\Repository\MenuRepository;
+use Illuminate\Support\Facades\Cache;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -39,7 +40,9 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
                 'can' => $request->user() ? $request->user()->getAllPermissions()->pluck('name') : [],
-                'menus' => $request->user() ? (new MenuRepository())->getMenu($request->user()) : [],
+                'menus' => $request->user() ? Cache::remember('cache_menus', 60*60, function() use ($request){
+                    return (new MenuRepository())->getMenu($request->user()); 
+                }) : [],
             ],
             'ziggy' => function () {
                 return (new Ziggy)->toArray();
@@ -47,7 +50,9 @@ class HandleInertiaRequests extends Middleware
             'locale' => function () {
                 return app()->getLocale();
             },
-            'language' => getLanguageArray(),
+            'language' => function(){
+                return getLanguageArray();
+            },
         ]);
     }
 }

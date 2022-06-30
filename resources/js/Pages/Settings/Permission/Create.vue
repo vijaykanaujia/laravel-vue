@@ -32,7 +32,7 @@ const submit = () => {
         onSuccess: () => {
             form.reset();
             toast.success('Permission created successfully');
-            Inertia.get(route('user.index'));
+            Inertia.get(route('permission.index'));
         },
         onError: (errors) => {
             toast.error('Something went wrong!');

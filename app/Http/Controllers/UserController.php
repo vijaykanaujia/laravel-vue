@@ -11,6 +11,7 @@ use App\Services\UserService;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -45,6 +46,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', User::class);
         $model = new User();
         $props = [
             'page' => $request->get('page', 0),
@@ -71,6 +73,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
         $props = [
             'title' => 'Create User',
             'token' => csrf_token(),
@@ -88,6 +91,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        $this->authorize('create', User::class);
         $this->userService->store($request->validated());
         return Redirect::back();
     }
@@ -100,6 +104,7 @@ class UserController extends Controller
      */
     public function show($user)
     {
+        $this->authorize('show', User::class);
         $props = [
             'title' => 'Permission Details: #' . $user,
             'user' => $this->userService->show($user)
@@ -115,6 +120,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         $props = [
             'title' => "Update User : #" . $user->id,
             'user' => $user,
@@ -135,6 +141,7 @@ class UserController extends Controller
      */
     public function update(EditUserRequest $request, $user)
     {
+        $this->authorize('update', User::class);
         $this->userService->update($user, $request->validated());
         return Redirect::back();
     }
@@ -147,6 +154,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
+        $this->authorize('delete', User::class);
         $this->userService->destroy($request);
         return Redirect::back();
     }

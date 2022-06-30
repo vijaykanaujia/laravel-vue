@@ -18,6 +18,7 @@ class MenuController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Menu::class);
         $model = new Menu();
         $props = [
             'page' => $request->get('page', 0),
@@ -42,6 +43,7 @@ class MenuController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Menu::class);
         $props = [
             'title' => 'Create Menu',
             'parent_menu' => getSelectInputMenu(),
@@ -58,6 +60,7 @@ class MenuController extends Controller
      */
     public function store(StoreMenuRequest $request)
     {
+        $this->authorize('create', Menu::class);
         Menu::create($request->validated());
         return Redirect::back();
     }
@@ -70,6 +73,7 @@ class MenuController extends Controller
      */
     public function show(Menu $menu)
     {
+        $this->authorize('view', Menu::class);
         $props = [
             'title' => 'Menu Details: #'. $menu->id,
             'menu' => $menu
@@ -85,6 +89,7 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu)
     {
+        $this->authorize('update', Menu::class);
         $props = [
             'title' => "Update Menu : #". $menu->id,
             'menu' => $menu,
@@ -103,6 +108,7 @@ class MenuController extends Controller
      */
     public function update(EditMenuRequest $request, Menu $menu)
     {
+        $this->authorize('update', Menu::class);
         $menu->update($request->validated());
         return Redirect::back();
     }
@@ -115,6 +121,7 @@ class MenuController extends Controller
      */
     public function destroy(Request $request)
     {
+        $this->authorize('delete', Menu::class);
         $menu = new Menu();
         if($request->action_type == 'multi-delete'){
             $menu->whereIn('id', $request->ids)->delete();
