@@ -28,10 +28,10 @@ class BasicSetupSeeder extends Seeder
         $role = Role::create(['name' => 'super-admin']);
         $user->assignRole($role);
         $menus = [
-            ['title' => 'Menu', 'page' => 'menu.index'],
-            ['title' => 'Role', 'page' => 'role.index'],
-            ['title' => 'Permission', 'page' => 'permission.index'],
-            ['title' => 'User', 'page' => 'user.index'],
+            ['title' => 'Menu', 'page' => 'menu.index', 'position' => 1],
+            ['title' => 'Role', 'page' => 'role.index', 'position' => 1],
+            ['title' => 'Permission', 'page' => 'permission.index', 'position' => 1],
+            ['title' => 'User', 'page' => 'user.index', 'position' => 1],
         ];
         foreach($menus as $menu){
             $menu = Menu::create(['title' => $menu['title'], 'page' => $menu['page']]);

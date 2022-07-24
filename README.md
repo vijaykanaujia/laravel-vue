@@ -7,6 +7,32 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## About App
+This is Vue scaffolding via an Inertia frontend implementation. Inertia allows you to build modern, single-page React and Vue applications using classic server-side routing and controllers.
+In this App Laravel Breez porvide Authentication and Spatie permission provide Authorization.
+
+#Feature of this application
+- Dont't need setup Authentication and Authorization.
+- Dynamic navigation bar with permission controle.
+- User, Role, Menu and Permission with CRUD Operation.
+- Super admin have ability to controle on user action through assign/de-assign permission.
+- multi language.
+
+## Installation
+
+- clone git repository
+- cd laravel-vue
+- composer install
+- npm install
+- cp .env.example .env
+- php artisan key:generate
+- create database and write database in env file
+- php artisan migrate
+- php artisan db:seed BasicSetupSeeder
+- php artisan serve
+- npm run watch
+- go to http://127.0.0.1:8000
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

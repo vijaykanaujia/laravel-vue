@@ -12,7 +12,7 @@ defineProps({
 <template>
     <Head title="Welcome" />
 
-    <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
+    <div id="welcome" class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
         <div v-if="canLogin" class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
             <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="text-sm text-gray-700 underline">
                 Dashboard
@@ -33,6 +33,12 @@ defineProps({
 </template>
 
 <style scoped>
+    #welcome{
+        background-image: url('./../../../public/images/bg-welcome.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
     .bg-gray-100 {
         background-color: #f7fafc;
         background-color: rgba(247, 250, 252, var(--tw-bg-opacity));
