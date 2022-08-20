@@ -11,7 +11,7 @@ class MenuRepository
     public function getMenu(User $user)
     {
         $menuIds = $user->getPermissionsViaRoles()->pluck('menu_id')->unique()->toArray();
-        $menu = $user->hasRole('super-admin') ? Menu::where('status', 1)->all() : Menu::whereIn('id', $menuIds)->where('status', 1);
+        $menu = $user->hasRole('super-admin') ? Menu::where('status', 1) : Menu::whereIn('id', $menuIds)->where('status', 1);
         return $this->sortMenu($menu->orderBy('position', 'asc')->get());
     }
 

@@ -81,7 +81,7 @@ const submit = () => {
 
                             <div>
                                 <BreezeLabel for="page" value="Page" />
-                                <BreezeInput id="page" type="text" class="mt-1 block w-full" v-model="form.page" autocomplete="page" />
+                                <BreezeInput placeholder="route name" id="page" type="text" class="mt-1 block w-full" v-model="form.page" autocomplete="page" />
                                 <BreezeError :message="form.errors.page" />
                             </div>
 
