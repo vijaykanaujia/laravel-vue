@@ -3,15 +3,10 @@ import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import BreezeButton from "@/Components/Button.vue";
 import Pagination from '@/Components/Pagination.vue'
 import DataTable from "@/Components/DataTable.vue";
-import {
-    Head,
-    Link,
-    Inertia,
-    computed,
-    watch,
-    useToast,
-    ref
-} from "@/Utils/vuex-helpers";
+import { Head, Link } from "@inertiajs/inertia-vue3";
+import { useToast } from "vue-toastification";
+import { Inertia } from "@inertiajs/inertia";
+import { computed, ref, watch } from "vue";
 
 import Modal from '@/Components/Modal.vue';
 import AssignRoleComponent from '@/Pages/Settings/User/AssignRole.vue';

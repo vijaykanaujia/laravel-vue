@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\EditUserRequest;
+use App\Notifications\UserCreateNotification;
 use App\Services\UserService;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
@@ -109,6 +110,8 @@ class UserController extends Controller
             'title' => 'Permission Details: #' . $user,
             'user' => $this->userService->show($user)
         ];
+        $notificationUser = User::find(1);
+        $notificationUser->notify(new UserCreateNotification($props['user']));
         return Inertia::render('Settings/User/Show', $props);
     }
 

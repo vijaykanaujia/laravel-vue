@@ -5,9 +5,12 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +46,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('user', UserController::class);
 
     Route::get('language/{language}', function ($language) {
-        Session()->put('locale', $language);
-        return Redirect::route('dashboard');
+        session()->put('locale', $language);
+        return back();
     })->name('language');
+
+    // notification routes
+    Route::get('notification', [NotificationController::class, 'index'])->name('notification');
+    Route::delete('notification/{id}', [NotificationController::class, 'delete']);
+    Route::put('notification/{id}', [NotificationController::class, 'markAsRead']);
 });

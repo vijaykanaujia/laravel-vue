@@ -28,7 +28,7 @@ class RolePolicy
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Role $role)
+    public function view(User $user)
     {
         return $user->can('permission.show');
     }
@@ -51,7 +51,7 @@ class RolePolicy
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Role $role)
+    public function update(User $user)
     {
         return $user->can('permission.update') || $user->can('permission.edit');
     }

@@ -1,8 +1,9 @@
 <script setup>
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import BreezeButton from "@/Components/Button.vue";
-import { Head, Link, ref } from "@/Utils/vuex-helpers";
+import { Head, Link } from "@inertiajs/inertia-vue3";
 import moment from "moment";
+import { ref } from "vue";
 
 defineProps({
     title: String,

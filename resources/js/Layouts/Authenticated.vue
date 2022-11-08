@@ -1,10 +1,12 @@
 <script setup>
-import { computed, Link, usePage, ref } from '@/Utils/vuex-helpers';
+import { Link, usePage } from '@inertiajs/inertia-vue3';
+import { ref } from 'vue';
 import BreezeApplicationLogo from '@/Components/ApplicationLogo.vue';
 import BreezeDropdown from '@/Components/Dropdown.vue';
 import BreezeDropdownLink from '@/Components/DropdownLink.vue';
 import BreezeNavLink from '@/Components/NavLink.vue';
 import BreezeResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import TSNotification from '../Pages/Notification/Notification.vue';
 
 defineProps({
     menus: Object,
@@ -44,8 +46,10 @@ const menus = ref(usePage().props.value.auth.menus);
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <!-- Settings Dropdown -->
-                            <div class="ml-3 relative">
-                                <BreezeDropdown align="right" width="48">
+                            <div class="ml-3">
+                                <div class="flex">
+                                    <TSNotification/>
+                                    <BreezeDropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -64,6 +68,8 @@ const menus = ref(usePage().props.value.auth.menus);
                                         </BreezeDropdownLink>
                                     </template>
                                 </BreezeDropdown>
+                                </div>
+                                
                             </div>
                         </div>
 

@@ -1,7 +1,8 @@
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
-
-import { Head, useToast, onMounted } from "@/Utils/vuex-helpers"
+import { Head } from '@inertiajs/inertia-vue3';
+import { useToast } from 'vue-toastification';
+import { onMounted } from 'vue';
 
 import LanguageSelector from '@/Shared/LanguageSelector.vue'
 

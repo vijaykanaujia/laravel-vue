@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 use App\Repository\MenuRepository;
+use Closure;
 use Illuminate\Support\Facades\Cache;
 
 class HandleInertiaRequests extends Middleware

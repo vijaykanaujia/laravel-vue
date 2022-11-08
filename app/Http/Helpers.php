@@ -13,7 +13,7 @@ function getAllSelectInputMenu(){
 
 function getLanguageArray()
 {
-    $path = resource_path('lang/'. app()->getLocale());
+    $path = base_path('lang/'. app()->getLocale());
     $files = array_diff(scandir($path), array('.', '..'));
     $languages = [];
     if(count($files)){

@@ -5,9 +5,9 @@
 </template>
 
 <script setup>
-import Icon from '@/Shared/Icon';
-import { computed, usePage, Link } from '@/Utils/vuex-helpers';
-
+import Icon from '@/Shared/Icon.vue';
+import { Link, usePage } from '@inertiajs/inertia-vue3';
+import { computed } from 'vue';
 const selectable_locale = computed(() => {
     return [
         {name : 'en', selected : usePage().props.value.locale == 'en'},

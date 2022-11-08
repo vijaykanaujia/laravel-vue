@@ -1,11 +1,3 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
-.stroke-black {
-    stroke: #1f2937;
-}
-
-:root {
-    --primary-color : #1f2937;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

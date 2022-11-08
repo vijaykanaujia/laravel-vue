@@ -24,6 +24,7 @@ onUnmounted(() => document.removeEventListener('keydown', closeOnEscape));
 
 const widthClass = computed(() => {
     return {
+        '80' : 'w-80',
         '48': 'w-48',
     }[props.width.toString()];
 });
@@ -48,7 +49,7 @@ const open = ref(false);
         </div>
 
         <!-- Full Screen Dropdown Overlay -->
-        <div v-show="open" class="fixed inset-0 z-40" @click="open = false"></div>
+        <!-- <div v-show="open" class="fixed inset-0 z-40" @click="open = false"></div> -->
 
         <transition
             enter-active-class="transition ease-out duration-200"
@@ -58,7 +59,7 @@ const open = ref(false);
             leave-from-class="transform opacity-100 scale-100"
             leave-to-class="transform opacity-0 scale-95">
             <div v-show="open"
-                    class="absolute z-50 mt-2 rounded-md shadow-lg"
+                    class="absolute z-50 mt-2 rounded shadow-lg"
                     :class="[widthClass, alignmentClasses]"
                     style="display: none;"
                     @click="open = false">

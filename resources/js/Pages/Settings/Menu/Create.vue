@@ -5,13 +5,9 @@ import BreezeInput from '@/Components/Input.vue';
 import BreezeLabel from '@/Components/Label.vue';
 import BreezeError from '@/Components/InputError.vue';
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
-import {
-    Head,
-    useForm,
-    Link,
-    useToast,
-    Inertia
-} from "@/Utils/vuex-helpers";
+import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
+import { useToast } from "vue-toastification";
+import { Inertia } from "@inertiajs/inertia";
 
 const props = defineProps({
     'title': String,

@@ -35,11 +35,8 @@ import BreezeLabel from '@/Components/Label.vue';
 import BreezeSelect from '@/Components/Select.vue';
 import BreezeError from '@/Components/InputError.vue';
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue';
-import {
-    Head,
-    useForm,
-    useToast
-} from "@/Utils/vuex-helpers"
+import { Head, useForm } from "@inertiajs/inertia-vue3";
+import { useToast } from "vue-toastification";
 
 defineProps({
     'title': String,

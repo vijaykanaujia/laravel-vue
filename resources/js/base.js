@@ -1,6 +1,6 @@
-const { usePage } = require("@inertiajs/inertia-vue3");
+import { usePage } from "@inertiajs/inertia-vue3";
 
-module.exports = {
+export default {
     methods: {
         /**
          * Translate the given key.
