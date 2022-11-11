@@ -11,7 +11,6 @@ class NotificationController extends Controller
 {
     public function index(Request $request)
     {
-        return $request->all();
         $data = [
             'notifications' => $request->notifications ?: [],
             'badge' => $request->badge ?: 0,
@@ -34,7 +33,7 @@ class NotificationController extends Controller
         }
 
         $data['badge'] = $user->unreadNotifications->count();
-        return $data;
+        return $this->success('success',$data);
     }
 
     public function delete(Request $request)
@@ -54,7 +53,7 @@ class NotificationController extends Controller
     public function markAsRead(Request $request)
     {
         $user = auth()->user();
-        if ($request->id = null) {
+        if ($request->id) {
             $user->unreadNotifications->where('id', $request->id)->markAsRead();
             return $this->success('Read !');
         } else {

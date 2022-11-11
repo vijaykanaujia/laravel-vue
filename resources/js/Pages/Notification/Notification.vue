@@ -1,32 +1,77 @@
 <script setup>
 import { Inertia } from "@inertiajs/inertia";
+import moment from "moment";
+import { onMounted, ref, toDisplayString } from "vue";
 import { useToast } from "vue-toastification";
 import BreezeDropdown from "../../Components/Dropdown.vue";
 // import AcademicCapIcon from '@heroicons/vue/outline/BellIcon';
 
-const props = defineProps({
+const props = ref({
     notifications: Array,
     badge: Number,
     notificationType: String,
 });
+props.value.badge = 0;
 const toast = useToast();
-
-function getNotifications(preserveState = true) {
-    axios.get(route("notification"))
+function getNotifications(notificationType = "limited") {
+    axios
+        .get(route("notification"), {
+            params: {
+                notificationType: notificationType,
+            },
+        })
         .then(function (response) {
-            // handle success
-            console.log(response);
+            props.value.notifications = response.data.data.notifications;
+            props.value.badge = response.data.data.badge;
+            props.value.notificationType = response.data.data.notificationType;
         })
         .catch(function (error) {
-            // handle error
-            console.log(error);
-        })
-        .then(function () {
-            // always executed
+            toast.error(error.response.data.message);
         });
-    return false;
 }
-getNotifications();
+onMounted(() => {
+    getNotifications();
+});
+
+function getReadNotification() {
+    getNotifications("read");
+}
+
+function getUnreadNotification() {
+    getNotifications("unread");
+}
+
+function getAllNotification() {
+    getNotifications("all");
+}
+
+function markAsReadNotification(id = 0) {
+    axios
+        .put(route("mark_as_read", { id: id }))
+        .then(function (response) {
+            getNotifications(props.value.notificationType);
+            toast.success(response.data.message);
+        })
+        .catch(function (error) {
+            toast.error(error.response.data.message);
+        });
+}
+
+function deleteNotification(id = 0) {
+    axios
+        .delete(route("delete.notification", { id: id }))
+        .then(function (response) {
+            getNotifications(props.value.notificationType);
+            toast.success(response.data.message);
+        })
+        .catch(function (error) {
+            toast.error(error.response.data.message);
+        });
+}
+
+function getFormattedDate(value) {
+    return value ? moment(value).format("DD-MM-YYYY") : "...";
+}
 </script>
 
 <template>
@@ -40,7 +85,7 @@ getNotifications();
                     <div
                         class="z-30 inline-flex absolute -top-2 -right-1 justify-center items-center w-6 h-6 text-xs font-bold text-white bg-red-500 rounded-full border-2 dark:border-gray-900"
                     >
-                        20
+                        {{ props.badge }}
                     </div>
                     <!-- <AcademicCapIcon class="h-6 w-6 text-blue-500"/> -->
                     <font-awesome-icon
@@ -53,19 +98,86 @@ getNotifications();
 
         <template #content>
             <div id="notification_container" class="grid grid-flow-colid">
-                <div class="header p-2">
-                    <ul class="flex flex-row space-x-4">
-                        <li class="basis-1/4">Notification</li>
-                        <li class="basis-4/12"></li>
-                        <li class="basis-1/12">All</li>
-                        <li class="basis-2/12">Read</li>
-                        <li class="basis-2/12">Unread</li>
+                <div class="header p-2 bg-gray-200">
+                    <h4 class="mb-1">Notifications</h4>
+                    <ul class="flex space-x-2">
+                        <!-- <li class="basis-5/12"></li> -->
+                        <li
+                            class="cursor-pointer text-xs"
+                            @click="getAllNotification()"
+                        >
+                            <span
+                                class="bg-gray-600 border-r-0 px-1 rounded text-white"
+                                >All</span
+                            >
+                        </li>
+                        <li
+                            class="cursor-pointer text-xs"
+                            @click="getReadNotification()"
+                        >
+                            <span
+                                class="bg-gray-600 border-r-0 px-1 rounded text-white"
+                                >Read</span
+                            >
+                        </li>
+                        <li
+                            class="cursor-pointer text-xs"
+                            @click="getUnreadNotification()"
+                        >
+                            <span
+                                class="bg-gray-600 border-r-0 px-1 rounded text-white"
+                                >Unread</span
+                            >
+                        </li>
+                        <li
+                            class="cursor-pointer text-xs"
+                            @click="markAsReadNotification()"
+                        >
+                            <span
+                                class="bg-gray-600 border-r-0 px-1 rounded text-white"
+                                >Mark As Read</span
+                            >
+                        </li>
+                        <li
+                            class="cursor-pointer text-xs"
+                            @click="deleteNotification()"
+                        >
+                            <span
+                                class="bg-gray-600 border-r-0 px-1 rounded text-white"
+                                >Clear All</span
+                            >
+                        </li>
                     </ul>
                 </div>
-                <div class="body p-2">
+                <div class="body dark:bg-gray-100">
                     <ul class="flex flex-col">
-                        <li v-for="notification in notifications">
-                            {{ notification.name }}
+                        <li
+                            :class="{ 'bg-slate-200': !notification.read_at }"
+                            class="text-xs p-2 border-b-2 border-slate-300"
+                            v-for="notification in props.notifications"
+                        >
+                            New User <b>{{ notification.data.name }}</b> ({{
+                                notification.data.email
+                            }}) registered at
+                            {{ getFormattedDate(notification.data.created_at) }}
+                            <p class="text-right">
+                                <span
+                                    @click="
+                                        markAsReadNotification(
+                                            notification.id
+                                        )
+                                    "
+                                    class="bg-gray-600 border-r-0 px-1 cursor-pointer rounded text-white"
+                                    >Read</span
+                                >
+                                <span
+                                    @click="
+                                        deleteNotification(notification.id)
+                                    "
+                                    class="bg-gray-600 border-r-0 px-1 ml-1 cursor-pointer rounded text-white"
+                                    >Delete</span
+                                >
+                            </p>
                         </li>
                     </ul>
                 </div>

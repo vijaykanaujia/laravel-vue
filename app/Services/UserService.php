@@ -44,7 +44,7 @@ class UserService {
     }
 
     public function show($user){
-        return $this->user->with('roles.permissions')->find($user)->toArray();
+        return $this->user->with('roles.permissions')->find($user);
     }
 
     protected function checkHasExactRoles($user, $roles = []) {

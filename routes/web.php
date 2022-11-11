@@ -52,6 +52,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // notification routes
     Route::get('notification', [NotificationController::class, 'index'])->name('notification');
-    Route::delete('notification/{id}', [NotificationController::class, 'delete']);
-    Route::put('notification/{id}', [NotificationController::class, 'markAsRead']);
+    Route::delete('notification/{id}', [NotificationController::class, 'delete'])->name('delete.notification');
+    Route::put('notification/{id}', [NotificationController::class, 'markAsRead'])->name('mark_as_read');
 });

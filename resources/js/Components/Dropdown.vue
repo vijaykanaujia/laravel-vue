@@ -9,7 +9,7 @@ const props = defineProps({
         default: '48'
     },
     contentClasses: {
-        default: () => ['py-1', 'bg-white']
+        default: () => ['bg-white']
     }
 });
 
@@ -62,7 +62,7 @@ const open = ref(false);
                     class="absolute z-50 mt-2 rounded shadow-lg"
                     :class="[widthClass, alignmentClasses]"
                     style="display: none;"
-                    @click="open = false">
+                    @click="open = true">
                 <div class="rounded-md ring-1 ring-black ring-opacity-5" :class="contentClasses">
                     <slot name="content" />
                 </div>

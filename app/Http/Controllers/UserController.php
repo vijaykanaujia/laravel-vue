@@ -110,8 +110,6 @@ class UserController extends Controller
             'title' => 'Permission Details: #' . $user,
             'user' => $this->userService->show($user)
         ];
-        $notificationUser = User::find(1);
-        $notificationUser->notify(new UserCreateNotification($props['user']));
         return Inertia::render('Settings/User/Show', $props);
     }
 

@@ -65,8 +65,8 @@ function getActionTitle(action) {
 </script>
 
 <template>
-<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+<table class="w-full text-sm text-left text-gray-100 dark:text-gray-900">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-200 dark:text-gray-900">
         <tr>
             <template v-for="col in displayedColumns" :key="col.ref">
                 <th v-if="col.ref =='select'" scope="col" class="px-6 py-3">
@@ -90,7 +90,7 @@ function getActionTitle(action) {
     <tbody>
         <template v-if="dataSource.length">
             <template v-for="row in dataSource" :key="row.id">
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr class="bg-white border-b dark:bg-gray-100 dark:border-gray-100 hover:bg-gray-50 dark:hover:bg-gray-400">
                     <template v-for="filter_col in displayedColumns">
                         <td v-if="filter_col.ref == 'select'" class="px-6 py-4">
                             <input type="checkbox" v-model="selected" :value="row.id">
@@ -111,7 +111,7 @@ function getActionTitle(action) {
                                 <template v-for="action in filter_col.actions">
                                 <template v-if="action.type == 'link'">
                                     <Link :href="route(action.route_name, row.id)" :title="getActionTitle(action.name)">
-                                        <svg class="w-6 h-6 stroke-black hover:stroke-cyan-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <svg class="w-6 h-6 stroke-black hover:stroke-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path :d="action.icon ? action.icon : 'M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z'" />
                                         </svg>
                                     </Link>
@@ -133,7 +133,7 @@ function getActionTitle(action) {
             </template>
         </template>
         <template v-else>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <tr class="bg-white border-b dark:bg-gray-100 dark:border-gray-100 hover:bg-gray-50 dark:hover:bg-gray-400">
             <td :colspan="displayedColumns.length" class="text-center text-orange-400 p-4">No Data</td>
             </tr>
         </template>
