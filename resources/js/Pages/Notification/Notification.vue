@@ -1,5 +1,6 @@
 <script setup>
 import { Inertia } from "@inertiajs/inertia";
+import { usePage } from "@inertiajs/inertia-vue3";
 import moment from "moment";
 import { onMounted, ref, toDisplayString } from "vue";
 import { useToast } from "vue-toastification";
@@ -31,6 +32,26 @@ function getNotifications(notificationType = "limited") {
 }
 onMounted(() => {
     getNotifications();
+    Echo.private(`App.Models.User.${usePage().props.value.auth.user.id}`)
+    .notification((notification) => {
+        console.log(notification);
+    }).error((error)=>{
+        debugger;
+    });
+
+    // Echo.join(`test-channel`)
+    // .here((users) => {
+    //     console.log(users);
+    // })
+    // .joining((user) => {
+    //     console.log(user.name);
+    // })
+    // .leaving((user) => {
+    //     console.log(user.name);
+    // })
+    // .error((error) => {
+    //     console.error(error);
+    // });
 });
 
 function getReadNotification() {
@@ -163,17 +184,13 @@ function getFormattedDate(value) {
                             <p class="text-right">
                                 <span
                                     @click="
-                                        markAsReadNotification(
-                                            notification.id
-                                        )
+                                        markAsReadNotification(notification.id)
                                     "
                                     class="bg-gray-600 border-r-0 px-1 cursor-pointer rounded text-white"
                                     >Read</span
                                 >
                                 <span
-                                    @click="
-                                        deleteNotification(notification.id)
-                                    "
+                                    @click="deleteNotification(notification.id)"
                                     class="bg-gray-600 border-r-0 px-1 ml-1 cursor-pointer rounded text-white"
                                     >Delete</span
                                 >

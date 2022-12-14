@@ -8,6 +8,8 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
+use App\Notifications\UserCreateNotification;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -32,7 +34,7 @@ Route::get('/', function () {
     ]);
 })->name('guest');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
@@ -54,4 +56,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('notification', [NotificationController::class, 'index'])->name('notification');
     Route::delete('notification/{id}', [NotificationController::class, 'delete'])->name('delete.notification');
     Route::put('notification/{id}', [NotificationController::class, 'markAsRead'])->name('mark_as_read');
+
+    Route::get('test', function () {
+        $notificationUser = User::find(1);
+        $notify = User::find(3);
+        $notify->notify(new UserCreateNotification($notificationUser));
+        echo "ok";
+        die;
+    });
 });

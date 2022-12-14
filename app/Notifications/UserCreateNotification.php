@@ -3,13 +3,14 @@
 namespace App\Notifications;
 
 use App\Models\User;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
-class UserCreateNotification extends Notification implements ShouldQueue
+class UserCreateNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
 
@@ -21,7 +22,6 @@ class UserCreateNotification extends Notification implements ShouldQueue
     public $user;
 
     public function __construct(User $user)
-    
     {
         $this->user = $user;
     }
@@ -48,8 +48,14 @@ class UserCreateNotification extends Notification implements ShouldQueue
         return $this->user->toArray();
     }
 
-    // public function toBroadcast($notifiable)
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage(['name' => "vijay babu"]);
+    }
+
+    // public function broadcastOn()
     // {
-    //     return new BroadcastMessage($this->user->toArray());
+    //     return "App.Models.User." . auth()->user()->id;
+    //     // return new PrivateChannel("App.Models.User." . auth()->user()->id);
     // }
 }
