@@ -8,7 +8,7 @@
 </p>
 
 ## About App
-This is Vue scaffolding via an Inertia frontend implementation. Inertia allows you to build modern, single-page ==Vue3 and vite bundling== application using classic server-side routing and controllers.
+This is Vue scaffolding via an Inertia frontend implementation. Inertia allows you to build modern, single-page **Vue3 and vite bundling** application using classic server-side routing and controllers.
 In this App Laravel Breez porvide Authentication and Spatie permission provide Authorization.
 
 #Feature of this application
