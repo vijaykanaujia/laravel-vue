@@ -35,8 +35,8 @@ class BasicSetupSeeder extends Seeder
         ];
         foreach($menus as $menu){
             $menu = Menu::create(['title' => $menu['title'], 'page' => $menu['page']]);
-            // $permission = Permission::create(['name' => $menu->page, 'menu_id' => $menu->id]);
-            // $role->givePermissionTo($permission);
+            $permission = Permission::create(['name' => $menu->page, 'menu_id' => $menu->id]);
+            $role->givePermissionTo($permission);
         }
 
 

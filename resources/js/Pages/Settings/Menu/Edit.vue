@@ -104,7 +104,7 @@ const submit = () => {
 
                             <div class="col-span-3">
                                 <BreezeLabel for="icon" value="Icon" />
-                                <BreezeTextarea id="icon" class="mt-1 block w-full" v-model="form.icon" />
+                                <BreezeInput id="icon" type="text" class="mt-1 block w-full" v-model="form.icon" />
                                 <BreezeError :message="form.errors.icon" />
                             </div>
 
