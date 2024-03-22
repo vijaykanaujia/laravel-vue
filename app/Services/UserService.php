@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService {
 
+    public $user;
     public function __construct() {
         $this->user = new User();
     }
